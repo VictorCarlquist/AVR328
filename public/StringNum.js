@@ -605,6 +605,29 @@ function OR(op1, op2)
 }
 
 /**
+* Realiza a operação .XOU.  
+* @param {string} op1 1o. valor (binario) 
+* @param {string} op2 2o. valor (binario)
+* @return {string} (binario)
+*/
+function XOR(op1, op2)
+{
+	var ns = "";
+	
+	for(var i = 0; i < 8; i++)
+	{
+		
+		if((Boolean(parseInt(op1[i])) && !Boolean(parseInt(op2[i])))  || (!Boolean(parseInt(op1[i])) && Boolean(parseInt(op2[i]))))
+			ns += "1";
+		else
+			ns += "0";
+	}
+	
+	return ns;
+	
+}
+
+/**
 * Realiza a operação .E.  
 * @param {string} op1 1o. valor (binario) 
 * @param {string} op2 2o. valor (binario)

@@ -28,9 +28,9 @@ function AtualizaDados()
 	for(var i=0;i<32;i++)
 	{
 		if(i<10)
-			ns+= "R"+i+" : "+ AVR328.R[i];
+			ns+= "R"+i+" : "+ AVR328.R[i]  +" ("+DecToBin(AVR328.R[i])+")";
 		else
-			ns+= "R"+i+": "+ AVR328.R[i];
+			ns+= "R"+i+": "+ AVR328.R[i]+" ("+DecToBin(AVR328.R[i])+")";
 		ns+="<br />";
 	}
 	flags.innerHTML = ns;

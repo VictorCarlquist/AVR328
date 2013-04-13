@@ -1195,6 +1195,41 @@ AVR328.Commands.push(new classeteste());
 //*********************************************
 
 //*********************************************
+//***Comando EOR ******************************
+//*********************************************
+var classeteste = function()
+{
+	this.asm = "EOR";
+	this.opcode="0010 01rd dddd rrrr"; //tudo em caixa baixa!
+}
+classeteste.prototype.Command = function(s,tipo) //s = Rd,Rd
+{
+	if (ValidateInput(s,_R_R)) // Valida os parametros do comando
+	{
+		var d = GetDReg(s);
+		var d2 = GetDReg2(s);
+		if(d < 0 || d > 31 || d2 < 0 || d2 > 31)
+			return 1;
+			
+		AVR328.R[d] = BinToDec(XOR(DecToBin(AVR328.R[d]),DecToBin(AVR328.R[d2])));	
+		AVR328.V = 0;
+		AfetaFlag(DecToBin(AVR328.R[d]));
+		InsereMemoria(CreateOpcode(this.opcode,d,0,0,d2,5,5));
+
+		AVR328.PC++;
+
+		return 0;
+	}else
+	{
+		return 1;
+	}	
+}
+AVR328.Commands.push(new classeteste());
+//*********************************************
+//*******FIM OR *****************************
+//*********************************************
+
+//*********************************************
 //***Comando ORI ******************************
 //*********************************************
 var classeteste = function()
@@ -1342,3 +1377,203 @@ AVR328.Commands.push(new classeteste());
 //***FIM MUL ******************************
 //*********************************************
 
+//*********************************************
+//***Comando COM ******************************
+//*********************************************
+var classeteste = function()
+{
+	this.asm = "COM";
+	this.opcode="1001 010d dddd 0000"; //tudo em caixa baixa!
+}
+classeteste.prototype.Command = function(s,tipo) //s = Rd
+{
+	if (ValidateInput(s,_R)) // Valida os parametros do comando
+	{
+		var d = GetDReg(s);
+		
+		if(d < 0 || d > 31)
+			return 1;
+		
+		s = SUB("11111111",DecToBin(AVR328.R[d]));
+		AVR328.R[d] = BinToDec(s);
+		
+		AfetaFlag(s);
+		//o this.opcode é o "1110 kkkk dddd kkkk", depois é passado o numedo de 'd', e valor de k, e quantos bits são o k, que neste caso é 8bits
+		AVR328.V = 0;
+		InsereMemoria(CreateOpcode(this.opcode,d,0,8,0,5,0));
+
+		AVR328.PC++;
+
+		return 0;
+	}else
+	{
+		return 1;
+	}	
+}
+AVR328.Commands.push(new classeteste());
+//*********************************************
+//***FIM COM ******************************
+//*********************************************
+
+//*********************************************
+//***Comando LSL ******************************
+//*********************************************
+var classeteste = function()
+{
+	this.asm = "LSL";
+	this.opcode="0000 11rd dddd rrrr"; //tudo em caixa baixa!
+}
+classeteste.prototype.Command = function(s,tipo) //s = Rd
+{
+	if (ValidateInput(s,_R)) // Valida os parametros do comando
+	{
+		var d = GetDReg(s);
+		
+		if(d < 0 || d > 31)
+			return 1;
+		
+		var n = DecToBin(AVR328.R[d]);
+		AVR328.R[d] = BinToDec(DecToBin(AVR328.R[d] << 1).substr(1));
+		
+		AfetaFlag(DecToBin(AVR328.R[d]));
+		AVR328.C = n[0]; 
+		
+		InsereMemoria(CreateOpcode(this.opcode,d,0,0,d,5,5));
+		
+		AVR328.PC++;
+
+		return 0;
+	}else
+	{
+		return 1;
+	}	
+}
+AVR328.Commands.push(new classeteste());
+//*********************************************
+//***FIM LSL ******************************
+//*********************************************
+
+//*********************************************
+//***Comando LSR ******************************
+//*********************************************
+var classeteste = function()
+{
+	this.asm = "LSR";
+	this.opcode="1001 010d dddd 0110"; //tudo em caixa baixa!
+}
+classeteste.prototype.Command = function(s,tipo) //s = Rd
+{
+	if (ValidateInput(s,_R)) // Valida os parametros do comando
+	{
+		var d = GetDReg(s);
+		
+		if(d < 0 || d > 31)
+			return 1;
+		
+		var n = DecToBin(AVR328.R[d]);
+		
+		AVR328.R[d] = AVR328.R[d] >>> 1;
+		
+		
+		AfetaFlag(DecToBin(AVR328.R[d]));
+
+		AVR328.C = n[n.length-1];
+		AVR328.N = 0;
+		InsereMemoria(CreateOpcode(this.opcode,d,0,8,0,5,0));
+		
+		AVR328.PC++;
+
+		return 0;
+	}else
+	{
+		return 1;
+	}	
+}
+AVR328.Commands.push(new classeteste());
+//*********************************************
+//***FIM LSR ******************************
+//*********************************************
+
+//*********************************************
+//***Comando ROR ******************************
+//*********************************************
+var classeteste = function()
+{
+	this.asm = "ROR";
+	this.opcode="1001 010d dddd 0111"; //tudo em caixa baixa!
+}
+classeteste.prototype.Command = function(s,tipo) //s = Rd
+{
+	if (ValidateInput(s,_R)) // Valida os parametros do comando
+	{
+		var d = GetDReg(s);
+		
+		if(d < 0 || d > 31)
+			return 1;
+		
+		var n = DecToBin(AVR328.R[d]);
+		
+		AVR328.R[d] = (AVR328.R[d] >>> 1);
+		AVR328.R[d] = BinToDec(AVR328.C+DecToBin(AVR328.R[d],7));
+		
+		AfetaFlag(DecToBin(AVR328.R[d]));
+
+		AVR328.C = n[n.length-1];
+
+		InsereMemoria(CreateOpcode(this.opcode,d,0,8,0,5,0));
+		
+		AVR328.PC++;
+
+		return 0;
+	}else
+	{
+		return 1;
+	}	
+}
+AVR328.Commands.push(new classeteste());
+//*********************************************
+//***FIM ROR ******************************
+//*********************************************
+
+//*********************************************
+//***Comando ROL ******************************
+//*********************************************
+var classeteste = function()
+{
+	this.asm = "ROL";
+	this.opcode="0001 11rd dddd rrrr"; //tudo em caixa baixa!
+}
+classeteste.prototype.Command = function(s,tipo) //s = Rd
+{
+	if (ValidateInput(s,_R)) // Valida os parametros do comando
+	{
+		var d = GetDReg(s);
+		
+		if(d < 0 || d > 31)
+			return 1;
+		
+		var n = DecToBin(AVR328.R[d]);
+		var x;
+		AVR328.R[d] = (AVR328.R[d] << 1);
+		x = DecToBin(AVR328.R[d]);
+		x[x.length-1] = AVR328.C;
+		AVR328.R[d] = BinToDec(x);
+		
+		AfetaFlag(DecToBin(AVR328.R[d]));
+
+		AVR328.C = n[0];
+
+		InsereMemoria(CreateOpcode(this.opcode,d,0,0,d,5,5));
+		
+		AVR328.PC++;
+
+		return 0;
+	}else
+	{
+		return 1;
+	}	
+}
+AVR328.Commands.push(new classeteste());
+//*********************************************
+//***FIM ROL ******************************
+//*********************************************

@@ -1378,6 +1378,67 @@ AVR328.Commands.push(new classeteste());
 //*********************************************
 
 //*********************************************
+//***Comando MULS ******************************
+//*********************************************
+var classeteste = function()
+{
+	this.asm = "MULS";
+	this.opcode="0000 0010 dddd rrrr"; //tudo em caixa baixa!
+}
+classeteste.prototype.Command = function(s,tipo) //s = Rd,Rd
+{
+	if (ValidateInput(s,_R_R)) // Valida os parametros do comando
+	{
+		var d = GetDReg(s);
+		var d2 = GetDReg2(s);
+		
+		if(d < 16 || d > 31 || d2 < 16 || d2 > 31)
+			return 1;
+		
+		var s=DecToBin('0',16); //inicializa com 16 bits 0
+		var m = DecToBin(AVR328.R[d2]);
+		if(m[0] == '1')
+			m = complement2(m);
+	
+		var times = DecToBin(AVR328.R[d]);
+		if(times[0] == '1')
+			times = complement2(times);
+	
+		times = BinToDec(times);
+		for(var i=0;i<times;i++)
+			s = ADD(m,s,false,16);
+		
+		
+		
+		if(DecToBin(AVR328.R[d2]).substr(0,1) == '0' && DecToBin(AVR328.R[d]).substr(0,1) == '0')
+			s[0] = '0';
+		else if((DecToBin(AVR328.R[d2]).substr(0,1) == '1' && DecToBin(AVR328.R[d]).substr(0,1) == '0') || ((DecToBin(AVR328.R[d2]).substr(0,1) == '0' && DecToBin(AVR328.R[d]).substr(0,1) == '1')))
+				s = complement2(s,16);
+			else if(DecToBin(AVR328.R[d2]).substr(0,1) == '1' && DecToBin(AVR328.R[d]).substr(0,1) == '1')
+					s[0] = '0';
+
+		AVR328.R[0] = BinToDec(s.substr(8,8));
+		AVR328.R[1] = BinToDec(s.substr(0,8));
+
+		var dk = BinToDec(s);
+		if(dk == 0) AVR328.Z = 1; else AVR328.Z = 0;
+		//o this.opcode é o "1110 kkkk dddd kkkk", depois é passado o numedo de 'd', e valor de k, e quantos bits são o k, que neste caso é 8bits
+		InsereMemoria(CreateOpcode(this.opcode,d,0,0,d2,4,4));
+
+		AVR328.PC++;
+
+		return 0;
+	}else
+	{
+		return 1;
+	}	
+}
+AVR328.Commands.push(new classeteste());
+//*********************************************
+//***FIM MULS ******************************
+//*********************************************
+
+//*********************************************
 //***Comando COM ******************************
 //*********************************************
 var classeteste = function()
@@ -1693,7 +1754,7 @@ classeteste.prototype.Command = function(s,tipo) //s = Rd,kk
 
 
 		//o this.opcode é o "1110 kkkk dddd kkkk", depois é passado o numedo de 'd', e valor de k, e quantos bits são o k, que neste caso é 8bits
-		InsereMemoria(CreateOpcode(this.opcode,d2/2,0,0,o2/2,5,5));
+		InsereMemoria(CreateOpcode(this.opcode,d2/2,0,0,o2/2,4,4));
 
 		AVR328.PC++;
 		

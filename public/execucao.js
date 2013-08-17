@@ -173,7 +173,6 @@ function inicializa(tipo)
 		for(var i=0;i<4096;i++)
 		{
 			MEMORIA_DADOS[i] = "0000 0000";
-
 		}
 		MostraMemoriaDados();
 	}

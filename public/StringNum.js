@@ -467,10 +467,10 @@ function negacao(item){
  *
  */
 
-function complement2(str){
+function complement2(str,digitos){
 	
 	var str = negacao(str);
-	str1 = ADD(str,DecToBin(1));
+	str1 = ADD(str,DecToBin(1),false,digitos);
 	if(AVR328.C == 1)
 		AVR328.V = 1;
 	else

@@ -240,6 +240,8 @@ function ValidateInput(s,type)
 		var p2	= RegExp(/(([x-z]|[X-Z])+(([h]|[H])))+:+(([x-z]|[X-Z])+(([l]|[L])))+,+((([r]|[R])+(\d\d))+:+(([r]|[R])+(\d\d)))/);
 		var p3	= RegExp(/((([r]|[R])+(\d\d))+:+(([r]|[R])+(\d\d)))+,+(([x-z]|[X-Z])+(([h]|[H])))+:+(([x-z]|[X-Z])+(([l]|[L])))/);
 		var p4	= RegExp(/((([r]|[R])+(\d\d))+:+(([r]|[R])+(\d\d)))+,+((([r]|[R])+(\d\d))+:+(([r]|[R])+(\d\d)))/);
+		var p5 	= RegExp(/((([r]|[R])+(\d\d))+:+(([r]|[R])+(\d\d)))+,+(([x-z]|[X-Z]))/);
+		var p6 	= RegExp(/(([x-z]|[X-Z]))+,+((([r]|[R])+(\d\d))+:+(([r]|[R])+(\d\d)))/);
 
 		//Verifica
 		s = s.split(",");
@@ -261,6 +263,8 @@ function ValidateInput(s,type)
 				s = s[1].replace("Y","R29:R28");
 			else if(s[1] == "Z")
 				s = s[1].replace("Z","R31:R30");
+
+			return true;
 		}
 		else if (p1.test(s))
 		{
@@ -283,10 +287,15 @@ function ValidateInput(s,type)
 			else
 				return false;
 
-
-		}else
-			return false;
-			
+			return true;
+		}else if (p2.test(s)) return true;
+			else if (p3.test(s)) return true;
+				else if (p4.test(s)) return true;
+					else if (p5.test(s)) return true;
+						else if (p6.test(s)) return true;
+							else
+							return false;
+	}
 	return false;
 }
 /**

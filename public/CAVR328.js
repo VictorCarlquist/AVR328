@@ -1590,7 +1590,7 @@ var classeteste = function()
 }
 classeteste.prototype.Command = function(s,tipo) //s = Rd,kk
 {
-	if (ValidateInput(s,5)) // Valida os parametros do comando
+	if (ValidateInput(s,7)) // Valida os parametros do comando
 	{
 
 		var p 	= RegExp(/(([x-z]|[X-Z]))+,+(([x-z]|[X-Z]))/);
@@ -1598,75 +1598,95 @@ classeteste.prototype.Command = function(s,tipo) //s = Rd,kk
 		var p2	= RegExp(/(([x-z]|[X-Z])+(([h]|[H])))+:+(([x-z]|[X-Z])+(([l]|[L])))+,+((([r]|[R])+(\d\d))+:+(([r]|[R])+(\d\d)))/);
 		var p3	= RegExp(/((([r]|[R])+(\d\d))+:+(([r]|[R])+(\d\d)))+,+(([x-z]|[X-Z])+(([h]|[H])))+:+(([x-z]|[X-Z])+(([l]|[L])))/);
 		var p4	= RegExp(/((([r]|[R])+(\d\d))+:+(([r]|[R])+(\d\d)))+,+((([r]|[R])+(\d\d))+:+(([r]|[R])+(\d\d)))/);
-
+		var p6 	= RegExp(/((([r]|[R])+(\d\d))+:+(([r]|[R])+(\d\d)))+,+(([x-z]|[X-Z]))/);
+		var p5 	= RegExp(/(([x-z]|[X-Z]))+,+((([r]|[R])+(\d\d))+:+(([r]|[R])+(\d\d)))/);
 		//Verifica
-		s = s.split(",");
+		as = s.split(",");
+		if (p5.test(s))
+		{
+			if(as[0] == "X")
+				as[0] = as[0].replace("X","R27:R26");
+			else if (as[0] == "Y")
+				as[0] = as[0].replace("Y","R29:R28");
+			else if(as[0] == "Z")
+				as[0] = as[0].replace("Z","R31:R30");	
+		}
+		if (p6.test(s))
+		{
+			if(as[1] == "X")
+				as[1] = as[1].replace("X","R27:R26");
+			else if (as[1] == "Y")
+				as[1] = as[1].replace("Y","R29:R28");
+			else if(as[1] == "Z")
+				as[1] = as[1].replace("Z","R31:R30");	
+		}
 		if (p.test(s))
 		{
 			//Substitui os ponteiros de XYZ pelo
 			//nome de cada registrador.
 			
-			if(s[0] == "X")
-				s = s[0].replace("X","R27:R26");
-			else if (s[0] == "Y")
-				s = s[0].replace("Y","R29:R28");
-			else if(s[0] == "Z")
-				s = s[0].replace("Z","R31:R30");
+			if(as[0] == "X")
+				as[0] = as[0].replace("X","R27:R26");
+			else if (as[0] == "Y")
+				as[0] = as[0].replace("Y","R29:R28");
+			else if(as[0] == "Z")
+				as[0] = as[0].replace("Z","R31:R30");
 
-			if(s[1] == "X")
-				s = s[1].replace("X","R27:R26");
-			else if (s[1] == "Y")
-				s = s[1].replace("Y","R29:R28");
-			else if(s[1] == "Z")
-				s = s[1].replace("Z","R31:R30");
+			if(as[1] == "X")
+				as[1] = as[1].replace("X","R27:R26");
+			else if (as[1] == "Y")
+				as[1] = as[1].replace("Y","R29:R28");
+			else if(as[1] == "Z")
+				as[1] = as[1].replace("Z","R31:R30");
 		}
 		else if (p1.test(s))
 		{
 			
-			if(s[0] == "XH:XL")
-				s = s[0].replace("XH:XL","R27:R26");
-			else if(s[0] == "YH:YL")
-				s = s[0].replace("YH:YL","R29:R28");
-			else if (s[0] == "ZH:ZL")
-				s = s[0].replace("ZH:ZL","R31:R30");
-			else
-				return false;	
-
-			if(s[1] == "XH:XL")
-				s = s[1].replace("XH:XL","R27:R26");
-			else if(s[1] == "YH:YL")
-				s = s[1].replace("YH:YL","R29:R28");
-			else if (s[1] == "ZH:ZL")
-				s = s[1].replace("ZH:ZL","R31:R30");
-			else
-				return false;
+			if(as[0] == "XH:XL")
+				as[0] = as[0].replace("XH:XL","R27:R26");
+			else if(as[0] == "YH:YL")
+				as[0] = as[0].replace("YH:YL","R29:R28");
+			else if (as[0] == "ZH:ZL")
+				as[0] = as[0].replace("ZH:ZL","R31:R30");
+			
+			if(as[1] == "XH:XL")
+				as[1] = as[1].replace("XH:XL","R27:R26");
+			else if(as[1] == "YH:YL")
+				as[1] = as[1].replace("YH:YL","R29:R28");
+			else if (as[1] == "ZH:ZL")
+				as[1] = as[1].replace("ZH:ZL","R31:R30");
+			
 		}
 
 		var d,d2,o,o2;
-		var dr = GetDReg2(s);
 		
-		var r = s[0].split(':');
-		if(r[0].length >=3)
-			d = parseInt(r[0].substring(1,2));
-		else
-			d = parseInt(r[0].substring(1,1));
+		var r = as[0].split(':');
+		if(r.length>1)
+		{
+			if(r[0].length >=3)
+				d = parseInt(r[0].substring(1,3));
+			else
+				d = parseInt(r[0].substring(1,2));
 
-		if(r[1].length >=3)
-			d2 = parseInt(r[1].substring(1,2));
-		else
-			d2 = parseInt(r[1].substring(1,1));
+			if(r[1].length >=3)
+				d2 = parseInt(r[1].substring(1,3));
+			else
+				d2 = parseInt(r[1].substring(1,2));
+		}
+		r = as[1].split(':');
+		if(r.length>1)
+		{
+			
+			if(r[0].length >=3)
+				o = parseInt(r[0].substring(1,3));
+			else
+				o = parseInt(r[0].substring(1,2));
 
-		r = s[1].split(':');
-		if(r[0].length >=3)
-			o = parseInt(r[0].substring(1,2));
-		else
-			o = parseInt(r[0].substring(1,1));
-
-		if(r[1].length >=3)
-			o2 = parseInt(r[1].substring(1,2));
-		else
-			o2 = parseInt(r[1].substring(1,1));
-	
+			if(r[1].length >=3)
+				o2 = parseInt(r[1].substring(1,3));
+			else
+				o2 = parseInt(r[1].substring(1,2));
+		}
 		
 		AVR328.R[d] = AVR328.R[o];
 		AVR328.R[d2] = AVR328.R[o2];

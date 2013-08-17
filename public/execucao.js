@@ -168,6 +168,15 @@ function inicializa(tipo)
 			MEMORIA_DADOS[i] = "0000 0000";
 		}
 	}
+	if(tipo == 1)
+	{
+		for(var i=0;i<4096;i++)
+		{
+			MEMORIA_DADOS[i] = "0000 0000";
+
+		}
+		MostraMemoriaDados();
+	}
 	END = 0;
 	AtualizaDados();
 	
@@ -224,7 +233,7 @@ function Montar()
 	ConsoleBinErro("");
 	MONTAGEM_OK = true;
 	EXECUTAR = false;
-	inicializa(0)
+	inicializa(0);
 	LINHA=0;
 	document.getElementById("linha").value = "Linha: " +AVR328.PC;
 	var CampoOpCODE = document.getElementById("opcode");

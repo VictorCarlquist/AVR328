@@ -1708,3 +1708,45 @@ AVR328.Commands.push(new classeteste());
 //*********************************************
 //***FIM MOVW ******************************
 //*********************************************
+
+
+//*********************************************
+//***Comando  XCH******************************
+//*********************************************
+var classeteste = function()
+{
+	//Complemento de 2
+	this.asm = "XCH";
+
+	this.opcode="1001 001r rrrr 0100"; //tudo em caixa baixa!
+}
+classeteste.prototype.Command = function(s,tipo) //s = Rd
+{
+	var p 	= RegExp(/((z|Z))+,+((R+(\d))|(R+(\d\d)))/);
+	if (p.test(s)) // Valida os parametros do comando
+	{
+	
+		s = s.replace("Z","R31:R30");
+		
+		var d0  = parseInt(s.substring(5,7));
+		var d1 = parseInt(s.substring(1,3));
+		var r = parseInt(s.substring(9,11));
+		
+		var bin = DecToBin(AVR328.R[d1]) + DecToBin(AVR328.R[d0]);
+		var dec = BinToDec(bin);
+		
+		var ex = TrimAll(MEMORIA_DADOS[dec]); 
+		MEMORIA_DADOS[dec] = DecToBin(AVR328.R[r],8,true);
+		AVR328.R[r] = BinToDec(ex);
+		InsereMemoria(CreateOpcode(this.opcode,0,0,0,r,0,5));
+		AVR328.PC++;
+		return 0;
+	}else
+	{
+		return 1;
+	}	
+}
+AVR328.Commands.push(new classeteste());
+//*********************************************
+//***FIM XCH ******************************
+//*********************************************

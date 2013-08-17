@@ -2,7 +2,7 @@ var CODE;
 var MEMORIA = new Array(4096);
 var MEMORIA_DADOS = new Array(4096);
 var END = 0;
-var LINHA = 0;
+var LINE = 0;
 var EXECUTAR = false; //VARIAVEL DIZ SE O EMULADOR ESTA EXECUTANDO O CODIDO, PARA IMPEDIR QUE ELE ADICIONE OS OPCODES NOVAMENTE
 var MONTAGEM_OK;
 	
@@ -21,6 +21,7 @@ function AtualizaDados()
 	ns += "N: "+AVR328.N+"  <br/>";
 	ns += "Z: "+AVR328.Z+"  <br/>";
 	ns += "C: "+AVR328.C+"  <br/>";
+	//ns += "PC:"+AVR328.PC+" <br/>";
 	
 	flags.innerHTML = ns;
 	flags = document.getElementById("Reg");
@@ -227,32 +228,32 @@ function Normalizar(c)
 */
 function Montar()
 {
-	linhas();
+	LINEs();
 	
 	ConsoleBinErro("");
 	MONTAGEM_OK = true;
 	EXECUTAR = false;
 	inicializa(0);
-	LINHA=0;
-	document.getElementById("linha").value = "Linha: " +AVR328.PC;
+	LINE=0;
+	document.getElementById("linha").value = "linha: " +LINE;
 	var CampoOpCODE = document.getElementById("opcode");
 
 
-	CODE = document.getElementById("CODE").value.split("\n");//Coloca uma linha em cada indice do vetor
-	while(LINHA < CODE.length)
+	CODE = document.getElementById("CODE").value.split("\n");//Coloca uma LINE em cada indice do vetor
+	while(LINE < CODE.length)
 	{
 		
-		CODE[LINHA] = Trim(CODE[LINHA]) // tira espaços iniciais e finais do comando
-		var CodSemComentario = CODE[LINHA].split(";");
-		CODE[LINHA] = CodSemComentario[0];
+		CODE[LINE] = Trim(CODE[LINE]) // tira espaços iniciais e finais do comando
+		var CodSemComentario = CODE[LINE].split(";");
+		CODE[LINE] = CodSemComentario[0];
 		
-		var c = CODE[LINHA].toUpperCase();//pega a instrução
+		var c = CODE[LINE].toUpperCase();//pega a instrução
 		var part = Normalizar(c);
 		
 		
 		//se for uma label, 
-		//pula para proxima linha se tiver espaço em branco
-		var isLabelOnly = false; // se existir uma label, ira verificar se há um comando na mesma linha
+		//pula para proxima LINE se tiver espaço em branco
+		var isLabelOnly = false; // se existir uma label, ira verificar se há um comando na mesma LINE
 		if(part[0].indexOf(":") >= 0 || part[0]=="")
 		{
 			if(part[1] != "") // se true: existe uma instrucao na frente da label
@@ -261,7 +262,7 @@ function Montar()
 			}
 			else
 			{
-				LINHA++;
+				LINE++;
 				isLabelOnly = true;
 			}
 		}	
@@ -275,7 +276,7 @@ function Montar()
 					encontrado = true;
 					if(AVR328.Commands[i].Command(TrimAll(part[1]),0) == 1) // Chama a ação do comando passando os parametros do comando
 					{
-						ConsoleBinErro("Erro na linha "+ (parseInt(LINHA)+1)+" : Parametro da instrucao "+AVR328.Commands[i].asm.toUpperCase()+"  incorreto.");
+						ConsoleBinErro("Erro na linha "+ (parseInt(LINE)+1)+" : Parametro da instrucao "+AVR328.Commands[i].asm.toUpperCase()+"  incorreto.");
 						MONTAGEM_OK = false;
 						break;
 					}
@@ -290,24 +291,26 @@ function Montar()
 			if(!encontrado)
 			{
 				MONTAGEM_OK = false;
-				ConsoleBinErro("Instrucao desconhecida! Linha:"+ (parseInt(LINHA)+1)+" : "+part[0]);
+				ConsoleBinErro("Instrucao desconhecida! linha:"+ (parseInt(LINE)+1)+" : "+part[0]);
 				break;
 			}
 		
 		
-			LINHA++;
+			LINE++;
 			
 		}
 		
 	}
 	
 	inicializa(1); // Limpa o estado do processador, pois esta função é apenas para gerar os opcodes.
-	if(MONTAGEM_OK && LINHA != 1)
+	if(MONTAGEM_OK && LINE != 1)
 	{
 		document.getElementById("CODE").disabled = true;
 		document.getElementById("btn_Frente").disabled = false;
 	}else
 		document.getElementById("btn_Frente").disabled = true;
+
+	LINE = 0;
 	
 }		
 /**
@@ -318,14 +321,14 @@ function Executar()
 	ConsoleBinErro("");
 	EXECUTAR = true;
 	inicializa(1);
-	while(AVR328.PC < CODE.length)
+	while(LINE < CODE.length)
 	{
 		
 		
-		var c = CODE[AVR328.PC].toUpperCase();//separa a instrução do parametros
+		var c = CODE[LINE].toUpperCase();//separa a instrução do parametros
 		var part = Normalizar(c);
 		
-		//se for uma label, pula para proxima linha 
+		//se for uma label, pula para proxima LINE 
 		var isLabelOnly = false;
 		if(part[0].indexOf(":") >= 0 || part[0]=="")
 		{
@@ -335,7 +338,7 @@ function Executar()
 			}
 			else
 			{
-				AVR328.PC++;
+				LINE++;
 				isLabelOnly = true;
 			}
 		}	
@@ -348,8 +351,8 @@ function Executar()
 				{
 					if(AVR328.Commands[i].Command(TrimAll(part[1]),1) == 1) // Chama a ação do comando passando os parametros do comando
 					{
-						ConsoleBinErro("Erro na linha "+ (parseInt(AVR328.PC)+1));
-						AVR328.PC++;
+						ConsoleBinErro("Erro na LINE "+ (parseInt(LINE)+1));
+						LINE++;
 					}
 					encontrado = true;
 					MostraMemoria();
@@ -361,7 +364,7 @@ function Executar()
 			}
 			if(!encontrado)
 			{
-				ConsoleBinErro("Instrucao desconhecida! Linha:"+ (parseInt(AVR328.PC)+1));
+				ConsoleBinErro("Instrucao desconhecida! LINE:"+ (parseInt(LINE)+1));
 
 			}
 		
@@ -372,7 +375,7 @@ function Executar()
 	document.getElementById("CODE").disabled = false;
 }		
 /**
-*Executa o código linha por linha
+*Executa o código LINE por LINE
 */
 function Passo()
 {
@@ -381,10 +384,10 @@ function Passo()
 	//inicializa(1);
 
 	//Este laço deixa com 1 espaço entre o CCC e Rd. Ex: LDI      R10,10 ->após o laço-> LDI R10,10
-	var c = CODE[AVR328.PC].toUpperCase();//separa a instrução do parametros
+	var c = CODE[LINE].toUpperCase();//separa a instrução do parametros
 	var part = Normalizar(c);
 		
-	//se for uma label, pula para proxima linha 
+	//se for uma label, pula para proxima LINE 
 		var isLabelOnly = false;
 		if(part[0].indexOf(":") >= 0 || part[0]=="")
 		{
@@ -394,7 +397,7 @@ function Passo()
 			}
 			else
 			{
-				AVR328.PC++;
+				LINE++;
 				isLabelOnly = true;
 			}
 		}	
@@ -407,8 +410,8 @@ function Passo()
 				{
 					if(AVR328.Commands[i].Command(TrimAll(part[1]),1) == 1) // Chama a ação do comando passando os parametros do comando
 					{
-						ConsoleBinErro("Erro na linha "+ (parseInt(AVR328.PC)+1));
-						AVR328.PC++;
+						ConsoleBinErro("Erro na linha "+ (parseInt(LINE)+1));
+						LINE++;
 						break;
 					
 					}
@@ -422,23 +425,23 @@ function Passo()
 			}
 			if(!encontrado)
 			{
-				ConsoleBinErro("Instrucao desconhecida! Linha:"+ (parseInt(AVR328.PC)+1));
+				ConsoleBinErro("Instrucao desconhecida! LINE:"+ (parseInt(LINE)+1));
 			}
 	
 	}
-	if((AVR328.PC) >= CODE.length)
+	if((LINE) >= CODE.length)
 	{
 		document.getElementById("btn_Frente").disabled = true;
 		document.getElementById("CODE").disabled = false;
 	}
 	
-	document.getElementById("linha").value = "Linha: " +AVR328.PC;
-	linhas(AVR328.PC);
+	document.getElementById("linhas").value = "Linha: " +LINE;
+	LINEs(LINE);
 }		
 /**
-* Gera o numero das linhas e destaca a linha em execução
+* Gera o numero das LINEs e destaca a LINE em execução
 */
-function linhas(l)
+function LINEs(l)
 {
 	var ns="";
 	if(!l)

@@ -14,7 +14,8 @@ CAVR328 = function (AVR328)
 	this.SP = 0;
 }
 var AVR328 = new CAVR328;
-
+var LINE = 0;
+var CALL; //Armazena a linha onde o call foi chamado para o RET retornar na linha correta
 //*********************************************
 //***Comando ALAN_TURING ******************************
 //*********************************************
@@ -36,7 +37,7 @@ classeteste.prototype.Command = function(s,tipo) //s = Rd,kk
     window.location = "alan_turing.html";
 	//o this.opcode é o "1110 kkkk dddd kkkk", depois é passado o numedo de 'd', e valor de k, e quantos bits são o k, que neste caso é 8bits
 	InsereMemoria(this.opcode);
-	AVR328.PC++;
+	LINE++; AVR328.PC++;
 
 	return 0;
 }
@@ -70,7 +71,7 @@ classeteste.prototype.Command = function(s,tipo) //s = Rd,kk
 		//o this.opcode é o "1110 kkkk dddd kkkk", depois é passado o numedo de 'd', e valor de k, e quantos bits são o k, que neste caso é 8bits
 		InsereMemoria(CreateOpcode(this.opcode,d-16,k,8));
 
-		AVR328.PC++;
+		LINE++; AVR328.PC++;
 		
 
 		return 0;
@@ -107,7 +108,7 @@ classeteste.prototype.Command = function(s,tipo) //s = Rd,kk
 		//o this.opcode é o "1110 kkkk dddd kkkk", depois é passado o numedo de 'd', e valor de k, e quantos bits são o k, que neste caso é 8bits
 		InsereMemoria(CreateOpcode(this.opcode,d,0,0,dr,5,5));
 
-		AVR328.PC++;
+		LINE++; AVR328.PC++;
 		
 
 		return 0;
@@ -147,7 +148,7 @@ classeteste.prototype.Command = function(s,tipo) //s = Rd,kk
 		//o this.opcode é o "1110 kkkk dddd kkkk", depois é passado o numedo de 'd', e valor de k, e quantos bits são o k, que neste caso é 8bits
 		InsereMemoria(CreateOpcode(this.opcode,d-16,k,8));
 
-		AVR328.PC++;
+		LINE++; AVR328.PC++;
 
 		return 0;
 	}else
@@ -183,7 +184,7 @@ classeteste.prototype.Command = function(s,tipo) //s = Rd,kk
 		//o this.opcode é o "1110 kkkk dddd kkkk", depois é passado o numedo de 'd', e valor de k, e quantos bits são o k, que neste caso é 8bits
 		InsereMemoria(CreateOpcode(this.opcode,d,0,0,r,5,5));
 
-		AVR328.PC++;
+		LINE++; AVR328.PC++;
 
 		return 0;
 	}else
@@ -216,9 +217,9 @@ classeteste.prototype.Command = function(s,tipo) //LABEL:
 		//o this.opcode é o "1110 kkkk dddd kkkk", depois é passado o numedo de 'd', e valor de k, e quantos bits são o k, que neste caso é 8bits
 		InsereMemoria(CreateOpcode(this.opcode,0,k,8));
 		if(AVR328.S == 0)
-			AVR328.PC = parseInt(k);
+			LINE = parseInt(k);
 		else
-			AVR328.PC++;
+			LINE++; AVR328.PC++;
 		return 0;
 	}
 	return 1;
@@ -248,9 +249,9 @@ classeteste.prototype.Command = function(s,tipo) //s = Rd,kk
 		//o this.opcode é o "1110 kkkk dddd kkkk", depois é passado o numedo de 'd', e valor de k, e quantos bits são o k, que neste caso é 8bits
 		InsereMemoria(CreateOpcode(this.opcode,0,k,8));
 		if(AVR328.Z == 1)
-			AVR328.PC = parseInt(k);
+			LINE = parseInt(k);
 		else
-			AVR328.PC++;
+			LINE++; AVR328.PC++;
 		return 0;
 	}
 	return 1;
@@ -279,9 +280,9 @@ classeteste.prototype.Command = function(s,tipo) //s = Rd,kk
 		//o this.opcode é o "1110 kkkk dddd kkkk", depois é passado o numedo de 'd', e valor de k, e quantos bits são o k, que neste caso é 8bits
 		InsereMemoria(CreateOpcode(this.opcode,0,k,8));
 		if(AVR328.S == 1)
-			AVR328.PC = parseInt(k);
+			LINE = parseInt(k);
 		else
-			AVR328.PC++;
+			LINE++; AVR328.PC++;
 		return 0;
 	}
 	return 1;
@@ -310,9 +311,9 @@ classeteste.prototype.Command = function(s,tipo) //s = Rd,kk
 		//o this.opcode é o "1110 kkkk dddd kkkk", depois é passado o numedo de 'd', e valor de k, e quantos bits são o k, que neste caso é 8bits
 		InsereMemoria(CreateOpcode(this.opcode,0,k,8));
 		if(AVR328.C == 0)
-			AVR328.PC = parseInt(k);
+			LINE = parseInt(k);
 		else
-			AVR328.PC++;
+			LINE++; AVR328.PC++;
 		return 0;
 	}
 	return 1;
@@ -341,9 +342,9 @@ classeteste.prototype.Command = function(s,tipo) //s = Rd,kk
 		//o this.opcode é o "1110 kkkk dddd kkkk", depois é passado o numedo de 'd', e valor de k, e quantos bits são o k, que neste caso é 8bits
 		InsereMemoria(CreateOpcode(this.opcode,0,k,8));
 		if(AVR328.C == 0)
-			AVR328.PC = parseInt(k);
+			LINE = parseInt(k);
 		else
-			AVR328.PC++;
+			LINE++; AVR328.PC++;
 		return 0;
 	}
 	return 1;
@@ -372,9 +373,9 @@ classeteste.prototype.Command = function(s,tipo) //s = Rd,kk
 		//o this.opcode é o "1110 kkkk dddd kkkk", depois é passado o numedo de 'd', e valor de k, e quantos bits são o k, que neste caso é 8bits
 		InsereMemoria(CreateOpcode(this.opcode,0,k,8));
 		if(AVR328.C == 1)
-			AVR328.PC = parseInt(k);
+			LINE = parseInt(k);
 		else
-			AVR328.PC++;
+			LINE++; AVR328.PC++;
 		return 0;
 	}
 	return 1;
@@ -403,9 +404,9 @@ classeteste.prototype.Command = function(s,tipo) //s = Rd,kk
 		//o this.opcode é o "1110 kkkk dddd kkkk", depois é passado o numedo de 'd', e valor de k, e quantos bits são o k, que neste caso é 8bits
 		InsereMemoria(CreateOpcode(this.opcode,0,k,8));
 		if(AVR328.C == 1)
-			AVR328.PC = parseInt(k);
+			LINE = parseInt(k);
 		else
-			AVR328.PC++;
+			LINE++; AVR328.PC++;
 		return 0;
 	}
 	return 1;
@@ -434,9 +435,9 @@ classeteste.prototype.Command = function(s,tipo) //s = Rd,kk
 		//o this.opcode é o "1110 kkkk dddd kkkk", depois é passado o numedo de 'd', e valor de k, e quantos bits são o k, que neste caso é 8bits
 		InsereMemoria(CreateOpcode(this.opcode,0,k,8));
 		if(AVR328.N == 1)
-			AVR328.PC = parseInt(k);
+			LINE = parseInt(k);
 		else
-			AVR328.PC++;
+			LINE++; AVR328.PC++;
 		return 0;
 	}
 	return 1;
@@ -465,9 +466,9 @@ classeteste.prototype.Command = function(s,tipo) //s = Rd,kk
 		//o this.opcode é o "1110 kkkk dddd kkkk", depois é passado o numedo de 'd', e valor de k, e quantos bits são o k, que neste caso é 8bits
 		InsereMemoria(CreateOpcode(this.opcode,0,k,8));
 		if(AVR328.V == 1)
-			AVR328.PC = parseInt(k);
+			LINE = parseInt(k);
 		else
-			AVR328.PC++;
+			LINE++; AVR328.PC++;
 		return 0;
 	}
 	return 1;
@@ -496,9 +497,9 @@ classeteste.prototype.Command = function(s,tipo) //s = Rd,kk
 		//o this.opcode é o "1110 kkkk dddd kkkk", depois é passado o numedo de 'd', e valor de k, e quantos bits são o k, que neste caso é 8bits
 		InsereMemoria(CreateOpcode(this.opcode,0,k,8));
 		if(AVR328.Z == 0)
-			AVR328.PC = parseInt(k);
+			LINE = parseInt(k);
 		else
-			AVR328.PC++;
+			LINE++; AVR328.PC++;
 		return 0;
 	}
 	return 1;
@@ -527,9 +528,9 @@ classeteste.prototype.Command = function(s,tipo) //s = Rd,kk
 		//o this.opcode é o "1110 kkkk dddd kkkk", depois é passado o numedo de 'd', e valor de k, e quantos bits são o k, que neste caso é 8bits
 		InsereMemoria(CreateOpcode(this.opcode,0,k,8));
 		if(AVR328.N == 0)
-			AVR328.PC = parseInt(k);
+			LINE = parseInt(k);
 		else
-			AVR328.PC++;
+			LINE++; AVR328.PC++;
 		return 0;
 	}
 	return 1;
@@ -558,9 +559,9 @@ classeteste.prototype.Command = function(s,tipo) //s = Rd,kk
 		//o this.opcode é o "1110 kkkk dddd kkkk", depois é passado o numedo de 'd', e valor de k, e quantos bits são o k, que neste caso é 8bits
 		InsereMemoria(CreateOpcode(this.opcode,0,k,8));
 		if(AVR328.V == 0)
-			AVR328.PC = parseInt(k);
+			LINE = parseInt(k);
 		else
-			AVR328.PC++;
+			LINE++; AVR328.PC++;
 		return 0;
 	}
 	return 1;
@@ -586,7 +587,7 @@ classeteste.prototype.Command = function(s,tipo) //s = Rd,kk
 	//o this.opcode é o "1110 kkkk dddd kkkk", depois é passado o numedo de 'd', e valor de k, e quantos bits são o k, que neste caso é 8bits
 	InsereMemoria(CreateOpcode(this.opcode,0,k,22));
 
-	AVR328.PC = parseInt(k);
+	LINE = parseInt(k);
 
 	return 0;
 
@@ -616,7 +617,7 @@ classeteste.prototype.Command = function(s,tipo) //s = Rd,Rd
 		//o this.opcode é o "1110 kkkk dddd kkkk", depois é passado o numedo de 'd', e valor de k, e quantos bits são o k, que neste caso é 8bits
 		InsereMemoria(CreateOpcode(this.opcode,d,0,0,d2,5,5));
 
-		AVR328.PC++;
+		LINE++; AVR328.PC++;
 
 		return 0;
 	}else
@@ -650,7 +651,7 @@ classeteste.prototype.Command = function(s,tipo) //s = Rd,Rr
 		//o this.opcode é o "1110 kkkk dddd kkkk", depois é passado o numedo de 'd', e valor de k, e quantos bits são o k, que neste caso é 8bits
 		InsereMemoria(CreateOpcode(this.opcode,d,0,0,d2,5,5));
 
-		AVR328.PC++;
+		LINE++; AVR328.PC++;
 
 		return 0;
 	}else
@@ -705,7 +706,7 @@ classeteste.prototype.Command = function(s,tipo) //s = Rd,Rr
 		if(d == "30")
 			d = 3;
 		var k = s.substring(8);
-		AVR328.PC++;
+		LINE++; AVR328.PC++;
 		
 		
 		InsereMemoria(CreateOpcode(this.opcode,d,k,6,0,2));
@@ -732,7 +733,7 @@ classeteste.prototype.Command = function(s,tipo) //s = Rd,Rd
     if(ValidateInput(s,6))
 	{
 	    END = parseInt(s);
-	    AVR328.PC++;
+	    LINE++; AVR328.PC++;
 	    return 0;
     }else
         return 1;
@@ -761,7 +762,7 @@ classeteste.prototype.Command = function(s,tipo) //s = Rd,kk
 		//o this.opcode é o "1110 kkkk dddd kkkk", depois é passado o numedo de 'd', e valor de k, e quantos bits são o k, que neste caso é 8bits
 		InsereMemoria(CreateOpcode(this.opcode,d,0,0,0,5));
 
-		AVR328.PC++;
+		LINE++; AVR328.PC++;
 		
 
 		return 0;
@@ -794,7 +795,7 @@ classeteste.prototype.Command = function(s,tipo) //s = Rd
 			AVR328.R[d] = BinToDec(complement2(DecToBin(AVR328.R[d])));
 		InsereMemoria(CreateOpcode(this.opcode,d,0,0,0,5));
 		AfetaFlag(DecToBin(AVR328.R[d]));
-		AVR328.PC++;
+		LINE++; AVR328.PC++;
 		
 
 		return 0;
@@ -825,7 +826,7 @@ classeteste.prototype.Command = function(s,tipo) //s = Rd
 		if(tipo == 1)
 			MEMORIA_DADOS[k] = DecToBin(AVR328.R[d],8,true);
 		InsereMemoria(CreateOpcode(this.opcode,d,k,16,0,5));
-		AVR328.PC++;
+		LINE++; AVR328.PC++;
 		return 0;
 	}else
 	{
@@ -856,7 +857,7 @@ classeteste.prototype.Command = function(s,tipo) //s = Rd
 		if(tipo == 1)
 			AVR328.R[d]=BinToDec(TrimAll(MEMORIA_DADOS[k]));
 		InsereMemoria(CreateOpcode(this.opcode,d,k,16,0,5));
-		AVR328.PC++;
+		LINE++; AVR328.PC++;
 		return 0;
 	}else
 	{
@@ -917,7 +918,7 @@ classeteste.prototype.Command = function(s,tipo) //s = Rd
 		if(tipo == 1)
 			MEMORIA_DADOS[dec] = DecToBin(AVR328.R[r],8,true);
 		InsereMemoria(CreateOpcode(this.opcode,0,0,0,r,0,5));
-		AVR328.PC++;
+		LINE++; AVR328.PC++;
 		return 0;
 	}else
 	{
@@ -981,7 +982,7 @@ classeteste.prototype.Command = function(s,tipo) //s = Rd
 		if(tipo == 1)
 			AVR328.R[d] = BinToDec(TrimAll(MEMORIA_DADOS[dec]));
 		InsereMemoria(CreateOpcode(this.opcode,d,0,0,0,5));
-		AVR328.PC++;
+		LINE++; AVR328.PC++;
 		return 0;
 	}else
 	{
@@ -1015,7 +1016,7 @@ classeteste.prototype.Command = function(s,tipo) //s = Rd
 		//o this.opcode é o "1110 kkkk dddd kkkk", depois é passado o numedo de 'd', e valor de k, e quantos bits são o k, que neste caso é 8bits
 		InsereMemoria(CreateOpcode(this.opcode,d,0,0,0,5));
 
-		AVR328.PC++;
+		LINE++; AVR328.PC++;
 
 		return 0;
 	}else
@@ -1049,7 +1050,7 @@ classeteste.prototype.Command = function(s,tipo) //s = Rd
 		//o this.opcode é o "1110 kkkk dddd kkkk", depois é passado o numedo de 'd', e valor de k, e quantos bits são o k, que neste caso é 8bits
 		InsereMemoria(CreateOpcode(this.opcode,d,0,0,0,5));
 
-		AVR328.PC++;
+		LINE++; AVR328.PC++;
 
 		return 0;
 	}else
@@ -1078,7 +1079,7 @@ classeteste.prototype.Command = function(s,tipo) //s = Rd
 	{
 		InsereMemoria(this.opcode);
 
-		AVR328.PC++;
+		LINE++; AVR328.PC++;
 
 		return 0;
 	}else
@@ -1110,7 +1111,7 @@ classeteste.prototype.Command = function(s,tipo) //s = Rd,Rd
 		AfetaFlag(DecToBin(AVR328.R[d]));
 		InsereMemoria(CreateOpcode(this.opcode,d,0,0,d2,6,6));
 
-		AVR328.PC++;
+		LINE++; AVR328.PC++;
 
 		return 0;
 	}else
@@ -1146,7 +1147,7 @@ classeteste.prototype.Command = function(s,tipo) //s = Rd,Rd
 		AfetaFlag(DecToBin(AVR328.R[d]));
 		InsereMemoria(CreateOpcode(this.opcode,d-16,k,8,0,4));
 
-		AVR328.PC++;
+		LINE++; AVR328.PC++;
 
 		return 0;
 	}else
@@ -1181,7 +1182,7 @@ classeteste.prototype.Command = function(s,tipo) //s = Rd,Rd
 		AfetaFlag(DecToBin(AVR328.R[d]));
 		InsereMemoria(CreateOpcode(this.opcode,d,0,0,d2,5,5));
 
-		AVR328.PC++;
+		LINE++; AVR328.PC++;
 
 		return 0;
 	}else
@@ -1216,7 +1217,7 @@ classeteste.prototype.Command = function(s,tipo) //s = Rd,Rd
 		AfetaFlag(DecToBin(AVR328.R[d]));
 		InsereMemoria(CreateOpcode(this.opcode,d,0,0,d2,5,5));
 
-		AVR328.PC++;
+		LINE++; AVR328.PC++;
 
 		return 0;
 	}else
@@ -1251,7 +1252,7 @@ classeteste.prototype.Command = function(s,tipo) //s = Rd,Rd
 		AfetaFlag(DecToBin(AVR328.R[d]));
 		InsereMemoria(CreateOpcode(this.opcode,d-16,k,8,0,4));
 
-		AVR328.PC++;
+		LINE++; AVR328.PC++;
 
 		return 0;
 	}else
@@ -1286,7 +1287,7 @@ classeteste.prototype.Command = function(s,tipo) //s = Rd,Rd
 		AfetaFlag(DecToBin(AVR328.R[d]));
 		InsereMemoria(CreateOpcode(this.opcode,d,0,0,d2,5,5));
 
-		AVR328.PC++;
+		LINE++; AVR328.PC++;
 
 		return 0;
 	}else
@@ -1321,7 +1322,7 @@ classeteste.prototype.Command = function(s,tipo) //s = Rd,Rd
 		AfetaFlag(DecToBin(AVR328.R[d]));
 		InsereMemoria(CreateOpcode(this.opcode,d-16,k,8,0,4));
 
-		AVR328.PC++;
+		LINE++; AVR328.PC++;
 
 		return 0;
 	}else
@@ -1364,7 +1365,7 @@ classeteste.prototype.Command = function(s,tipo) //s = Rd,Rd
 		//o this.opcode é o "1110 kkkk dddd kkkk", depois é passado o numedo de 'd', e valor de k, e quantos bits são o k, que neste caso é 8bits
 		InsereMemoria(CreateOpcode(this.opcode,d,0,0,d2,5,5));
 
-		AVR328.PC++;
+		LINE++; AVR328.PC++;
 
 		return 0;
 	}else
@@ -1425,7 +1426,7 @@ classeteste.prototype.Command = function(s,tipo) //s = Rd,Rd
 		//o this.opcode é o "1110 kkkk dddd kkkk", depois é passado o numedo de 'd', e valor de k, e quantos bits são o k, que neste caso é 8bits
 		InsereMemoria(CreateOpcode(this.opcode,d,0,0,d2,4,4));
 
-		AVR328.PC++;
+		LINE++; AVR328.PC++;
 
 		return 0;
 	}else
@@ -1463,7 +1464,7 @@ classeteste.prototype.Command = function(s,tipo) //s = Rd
 		AVR328.V = 0;
 		InsereMemoria(CreateOpcode(this.opcode,d,0,8,0,5,0));
 
-		AVR328.PC++;
+		LINE++; AVR328.PC++;
 
 		return 0;
 	}else
@@ -1501,7 +1502,7 @@ classeteste.prototype.Command = function(s,tipo) //s = Rd
 		
 		InsereMemoria(CreateOpcode(this.opcode,d,0,0,d,5,5));
 		
-		AVR328.PC++;
+		LINE++; AVR328.PC++;
 
 		return 0;
 	}else
@@ -1542,7 +1543,7 @@ classeteste.prototype.Command = function(s,tipo) //s = Rd
 		AVR328.N = 0;
 		InsereMemoria(CreateOpcode(this.opcode,d,0,8,0,5,0));
 		
-		AVR328.PC++;
+		LINE++; AVR328.PC++;
 
 		return 0;
 	}else
@@ -1583,7 +1584,7 @@ classeteste.prototype.Command = function(s,tipo) //s = Rd
 
 		InsereMemoria(CreateOpcode(this.opcode,d,0,8,0,5,0));
 		
-		AVR328.PC++;
+		LINE++; AVR328.PC++;
 
 		return 0;
 	}else
@@ -1626,7 +1627,7 @@ classeteste.prototype.Command = function(s,tipo) //s = Rd
 
 		InsereMemoria(CreateOpcode(this.opcode,d,0,0,d,5,5));
 		
-		AVR328.PC++;
+		LINE++; AVR328.PC++;
 
 		return 0;
 	}else
@@ -1756,7 +1757,7 @@ classeteste.prototype.Command = function(s,tipo) //s = Rd,kk
 		//o this.opcode é o "1110 kkkk dddd kkkk", depois é passado o numedo de 'd', e valor de k, e quantos bits são o k, que neste caso é 8bits
 		InsereMemoria(CreateOpcode(this.opcode,d2/2,0,0,o2/2,4,4));
 
-		AVR328.PC++;
+		LINE++; AVR328.PC++;
 		
 
 		return 0;
@@ -1800,7 +1801,7 @@ classeteste.prototype.Command = function(s,tipo) //s = Rd
 		MEMORIA_DADOS[dec] = DecToBin(AVR328.R[r],8,true);
 		AVR328.R[r] = BinToDec(ex);
 		InsereMemoria(CreateOpcode(this.opcode,0,0,0,r,0,5));
-		AVR328.PC++;
+		LINE++; AVR328.PC++;
 		return 0;
 	}else
 	{
@@ -1810,4 +1811,63 @@ classeteste.prototype.Command = function(s,tipo) //s = Rd
 AVR328.Commands.push(new classeteste());
 //*********************************************
 //***FIM XCH ******************************
+//*********************************************
+
+//*********************************************
+//***Comando CALL ******************************
+//*********************************************
+var classeteste = function()
+{
+	//if Rd >= Rr unsigned C = 0
+	this.asm = "CALL";
+	this.opcode="1001 010k kkkk 111k kkkk kkkk kkkk kkkk"; //tudo em caixa baixa!
+}
+classeteste.prototype.Command = function(s,tipo) //s = Rd,kk
+{
+	var k = AchaLabel(s);
+	
+	if(k!=-1)
+	{
+		//o this.opcode é o "1110 kkkk dddd kkkk", depois é passado o numedo de 'd', e valor de k, e quantos bits são o k, que neste caso é 8bits
+		InsereMemoria(CreateOpcode(this.opcode,0,k,22,0,0));
+		
+			CALL = ++LINE; //Salva a linha que o call foi chamado		
+			LINE = parseInt(k);
+		 	AVR328.PC++;
+		 	
+		return 0;
+	}
+	return 1;
+}
+AVR328.Commands.push(new classeteste());
+//*********************************************
+//***FIM CALL ******************************
+//*********************************************
+
+//*********************************************
+//***Comando RET ******************************
+//*********************************************
+var classeteste = function()
+{
+	//if Rd >= Rr unsigned C = 0
+	this.asm = "RET";
+	this.opcode="1001 0101 0000 1000"; //tudo em caixa baixa!
+}
+classeteste.prototype.Command = function(s,tipo) //s = Rd,kk
+{
+	if(CALL != "")
+	{
+		//o this.opcode é o "1110 kkkk dddd kkkk", depois é passado o numedo de 'd', e valor de k, e quantos bits são o k, que neste caso é 8bits
+		InsereMemoria(CreateOpcode(this.opcode,0,0,0,0,0));
+		
+			LINE = CALL;
+		 	AVR328.PC++;
+		 	
+		return 0;
+	}
+	return 1;
+}
+AVR328.Commands.push(new classeteste());
+//*********************************************
+//***FIM CALL ******************************
 //*********************************************

@@ -1577,3 +1577,114 @@ AVR328.Commands.push(new classeteste());
 //*********************************************
 //***FIM ROL ******************************
 //*********************************************
+
+//*********************************************
+//***Comando MOVW ******************************
+//*********************************************
+var classeteste = function()
+{
+	
+	this.asm = "MOVW";
+	
+	this.opcode="0000 0001 dddd rrrr"; //tudo em caixa baixa!
+}
+classeteste.prototype.Command = function(s,tipo) //s = Rd,kk
+{
+	if (ValidateInput(s,5)) // Valida os parametros do comando
+	{
+
+		var p 	= RegExp(/(([x-z]|[X-Z]))+,+(([x-z]|[X-Z]))/);
+		var p1	= RegExp(/(([x-z]|[X-Z])+(([h]|[H])))+:+(([x-z]|[X-Z])+(([l]|[L])))+,+(([x-z]|[X-Z])+(([h]|[H])))+:+(([x-z]|[X-Z])+(([l]|[L])))/);
+		var p2	= RegExp(/(([x-z]|[X-Z])+(([h]|[H])))+:+(([x-z]|[X-Z])+(([l]|[L])))+,+((([r]|[R])+(\d\d))+:+(([r]|[R])+(\d\d)))/);
+		var p3	= RegExp(/((([r]|[R])+(\d\d))+:+(([r]|[R])+(\d\d)))+,+(([x-z]|[X-Z])+(([h]|[H])))+:+(([x-z]|[X-Z])+(([l]|[L])))/);
+		var p4	= RegExp(/((([r]|[R])+(\d\d))+:+(([r]|[R])+(\d\d)))+,+((([r]|[R])+(\d\d))+:+(([r]|[R])+(\d\d)))/);
+
+		//Verifica
+		s = s.split(",");
+		if (p.test(s))
+		{
+			//Substitui os ponteiros de XYZ pelo
+			//nome de cada registrador.
+			
+			if(s[0] == "X")
+				s = s[0].replace("X","R27:R26");
+			else if (s[0] == "Y")
+				s = s[0].replace("Y","R29:R28");
+			else if(s[0] == "Z")
+				s = s[0].replace("Z","R31:R30");
+
+			if(s[1] == "X")
+				s = s[1].replace("X","R27:R26");
+			else if (s[1] == "Y")
+				s = s[1].replace("Y","R29:R28");
+			else if(s[1] == "Z")
+				s = s[1].replace("Z","R31:R30");
+		}
+		else if (p1.test(s))
+		{
+			
+			if(s[0] == "XH:XL")
+				s = s[0].replace("XH:XL","R27:R26");
+			else if(s[0] == "YH:YL")
+				s = s[0].replace("YH:YL","R29:R28");
+			else if (s[0] == "ZH:ZL")
+				s = s[0].replace("ZH:ZL","R31:R30");
+			else
+				return false;	
+
+			if(s[1] == "XH:XL")
+				s = s[1].replace("XH:XL","R27:R26");
+			else if(s[1] == "YH:YL")
+				s = s[1].replace("YH:YL","R29:R28");
+			else if (s[1] == "ZH:ZL")
+				s = s[1].replace("ZH:ZL","R31:R30");
+			else
+				return false;
+		}
+
+		var d,d2,o,o2;
+		var dr = GetDReg2(s);
+		
+		var r = s[0].split(':');
+		if(r[0].length >=3)
+			d = parseInt(r[0].substring(1,2));
+		else
+			d = parseInt(r[0].substring(1,1));
+
+		if(r[1].length >=3)
+			d2 = parseInt(r[1].substring(1,2));
+		else
+			d2 = parseInt(r[1].substring(1,1));
+
+		r = s[1].split(':');
+		if(r[0].length >=3)
+			o = parseInt(r[0].substring(1,2));
+		else
+			o = parseInt(r[0].substring(1,1));
+
+		if(r[1].length >=3)
+			o2 = parseInt(r[1].substring(1,2));
+		else
+			o2 = parseInt(r[1].substring(1,1));
+	
+		
+		AVR328.R[d] = AVR328.R[o];
+		AVR328.R[d2] = AVR328.R[o2];
+
+
+		//o this.opcode é o "1110 kkkk dddd kkkk", depois é passado o numedo de 'd', e valor de k, e quantos bits são o k, que neste caso é 8bits
+		InsereMemoria(CreateOpcode(this.opcode,d2/2,0,0,o2/2,5,5));
+
+		AVR328.PC++;
+		
+
+		return 0;
+	}else
+	{
+		return 1;
+	}	
+}
+AVR328.Commands.push(new classeteste());
+//*********************************************
+//***FIM MOVW ******************************
+//*********************************************

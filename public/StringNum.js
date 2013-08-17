@@ -95,7 +95,8 @@ function TrimAll(str){return str.replace(/\s/g,'');}
 * KK com Rd = 3 <br />
 * [X-Z],Rd  = 4 <br />
 * Rd,[X-Z]  = 5 <br /> 
-* KK        = 6 
+* KK        = 6 <br /> 
+* [X-Z|Rd:Rd],[X-Z|Rd:Rd] = 7
 * @return {boolean}
 */
 //constantes da função ValidateInput
@@ -232,7 +233,60 @@ function ValidateInput(s,type)
 	if(type == 6)
 	    if(K.test(s))
 			    return true;
+	if(type == 7)
+	{
+		var p 	= RegExp(/(([x-z]|[X-Z]))+,+(([x-z]|[X-Z]))/);
+		var p1	= RegExp(/(([x-z]|[X-Z])+(([h]|[H])))+:+(([x-z]|[X-Z])+(([l]|[L])))+,+(([x-z]|[X-Z])+(([h]|[H])))+:+(([x-z]|[X-Z])+(([l]|[L])))/);
+		var p2	= RegExp(/(([x-z]|[X-Z])+(([h]|[H])))+:+(([x-z]|[X-Z])+(([l]|[L])))+,+((([r]|[R])+(\d\d))+:+(([r]|[R])+(\d\d)))/);
+		var p3	= RegExp(/((([r]|[R])+(\d\d))+:+(([r]|[R])+(\d\d)))+,+(([x-z]|[X-Z])+(([h]|[H])))+:+(([x-z]|[X-Z])+(([l]|[L])))/);
+		var p4	= RegExp(/((([r]|[R])+(\d\d))+:+(([r]|[R])+(\d\d)))+,+((([r]|[R])+(\d\d))+:+(([r]|[R])+(\d\d)))/);
 
+		//Verifica
+		s = s.split(",");
+		if (p.test(s))
+		{
+			//Substitui os ponteiros de XYZ pelo
+			//nome de cada registrador.
+			
+			if(s[0] == "X")
+				s = s[0].replace("X","R27:R26");
+			else if (s[0] == "Y")
+				s = s[0].replace("Y","R29:R28");
+			else if(s[0] == "Z")
+				s = s[0].replace("Z","R31:R30");
+
+			if(s[1] == "X")
+				s = s[1].replace("X","R27:R26");
+			else if (s[1] == "Y")
+				s = s[1].replace("Y","R29:R28");
+			else if(s[1] == "Z")
+				s = s[1].replace("Z","R31:R30");
+		}
+		else if (p1.test(s))
+		{
+			
+			if(s[0] == "XH:XL")
+				s = s[0].replace("XH:XL","R27:R26");
+			else if(s[0] == "YH:YL")
+				s = s[0].replace("YH:YL","R29:R28");
+			else if (s[0] == "ZH:ZL")
+				s = s[0].replace("ZH:ZL","R31:R30");
+			else
+				return false;	
+
+			if(s[1] == "XH:XL")
+				s = s[1].replace("XH:XL","R27:R26");
+			else if(s[1] == "YH:YL")
+				s = s[1].replace("YH:YL","R29:R28");
+			else if (s[1] == "ZH:ZL")
+				s = s[1].replace("ZH:ZL","R31:R30");
+			else
+				return false;
+
+
+		}else
+			return false;
+			
 	return false;
 }
 /**

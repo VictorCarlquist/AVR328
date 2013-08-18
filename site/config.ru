@@ -1,6 +1,7 @@
 use Rack::Static, 
   :urls => ["/media/images", "/media/js", "/media/css"],
-  :root => "public"
+  :root => "public",
+  :index => "index.html"
 
 map "/" do
   run lambda { |env|

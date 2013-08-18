@@ -1,8 +1,14 @@
-app = Rack::Builder.new do
-  use Rack::Static, urls: {"/" => "index.html"}, root: "public"
-  run Rack::URLMap.new({
-	"/" => Rack::Directory.new("public")
-  })
-end
+use Rack::Static, 
+  :urls => ["/images", "/js", "/css"],
+  :root => "public"
 
-run app
+run lambda { |env|
+  [
+    200, 
+    {
+      'Content-Type'  => 'text/html', 
+      'Cache-Control' => 'public, max-age=86400' 
+    },
+    File.open('public/index.html', File::RDONLY)
+  ]
+}

@@ -34,7 +34,7 @@ classeteste.prototype.Command = function(s,tipo) //s = Rd,kk
 	    AVR328.R[i] = s[i];
 
     //gira();
-    window.location = "alan_turing.html";
+    window.location = "site/alan_turing.html";
 	//o this.opcode é o "1110 kkkk dddd kkkk", depois é passado o numedo de 'd', e valor de k, e quantos bits são o k, que neste caso é 8bits
 	InsereMemoria(this.opcode);
 	LINE++; AVR328.PC++;

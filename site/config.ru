@@ -1,7 +1,9 @@
 use Rack::Static, 
+  :urls => ["/media/images", "/media/js", "/media/css"],
   :root => "public"
 
-run lambda { |env|
+map "/" do
+  run lambda { |env|
   [
     200, 
     {
@@ -11,3 +13,4 @@ run lambda { |env|
     File.open('public/index.html', File::RDONLY)
   ]
 }
+end

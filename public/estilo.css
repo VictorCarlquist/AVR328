@@ -1,0 +1,118 @@
+#todo{
+	margin:auto;
+	display:table;
+	overflow-x:scroll;
+	min-width:900px;
+}
+body{
+	background-color: #EEE;
+}
+#code{
+	width:400px;
+	border-radius:10px;
+	-moz-border-radius:10px;
+	float:left;
+	
+}
+#console1{
+	float:left;
+	width:auto;
+	margin-left:6px;
+	display:table;
+}
+#console2{
+	position: relative;
+	width:auto;
+	height:50px;
+	float:left;
+}
+#console3{
+	float:left;
+	width:auto;
+	margin-left:6px;
+}
+#Reg,#Flag{
+	float:left;
+	width:130px;
+	margin-left:6px;
+	padding:5px;
+	background-color: #FFF8DC;
+	font-family:Verdana;
+	font-size: 70%;
+	border: 1px solid green;
+}
+#Flag{
+	width:40px;
+}
+#titulo{
+	border-radius:10px;
+	-moz-border-radius:10px;
+	border:1px solid #0F7FF0;
+	padding:4px;
+	margin:3px;
+	font-size:80%;
+	text-align:center;
+	color:#0F7F7F;
+}
+.opcode{
+	background-color: #FFF8DC;
+	color:#00008B;
+	font-family:Verdana;
+	font-size:70%;
+	height:207px;
+	width:127px;
+	border:1px solid blue;
+	
+}
+.float_esq{
+	float: left;
+}
+.code{
+	background-color: #FFF8DC;
+	font-family:Lucida Console;
+	font-size:80%;
+	height:450px;
+	border:1px solid black;
+	padding:5px;
+}
+.erros{
+	background-color: #FFE;
+	font-family:verdana;
+	color:#E00;
+	font-size:80%;
+	border:1px solid red;
+	width:100%;
+}
+#linha{
+	width:60px;
+}
+#linhas{
+	width:20px;
+	float:left;
+	height:450px;
+	overflow:hidden;
+	font-family:Verdana;
+	font-size:80%;
+	margin-top:37px;
+	margin-right:3px;
+	direction: rtl;
+	background-color: #FFE;
+	padding:2px;
+}
+#ajuda{
+	width:800px;
+	background-color: #FFF8DC;
+	padding:8px;
+	border-radius:15px;
+	margin:auto;
+	
+}
+#ajuda_menu{
+	position:fixed;
+	top:0;
+	width:100px;
+	background-color: #FFF8DC;
+	padding:8px;
+	border-radius:15px;
+	text-align:center;
+}

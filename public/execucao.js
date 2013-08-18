@@ -21,6 +21,7 @@ function AtualizaDados()
 	ns += "N: "+AVR328.N+"  <br/>";
 	ns += "Z: "+AVR328.Z+"  <br/>";
 	ns += "C: "+AVR328.C+"  <br/>";
+	ns += "SP:"+AVR328.SP+"  <br/>";
 	//ns += "PC:"+AVR328.PC+" <br/>";
 	
 	flags.innerHTML = ns;

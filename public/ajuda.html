@@ -1,9 +1,18 @@
+<!DOCTYPE html>
 <html>	
 	<head>
-	<link type="text/css" rel="stylesheet" href="estilo.css">
+		<link type="text/css" rel="stylesheet" href="estilo.css">
+		<link rel="stylesheet" href="css/bootstrap/css/bootstrap.css"></link>
+		<link rel="stylesheet" href="css/bootstrap/css/bootstrap-responsive.css"></link>
 		<title>Emulador AVR328 v.Alpha 1.1</title>
 	</head>
 	<body>
+		<ul class="nav nav-tabs">
+    		<li>
+    			<a href="index.html">Simulador</a>
+   		 	</li>
+    		<li class="active"><a href="ajuda.html">Ajuda</a></li>
+    	</ul>
 		<div id="ajuda">
 		<h2>Avisos Importantes! </h2>
 		
@@ -18,75 +27,96 @@
 		
 		<ul>
 			<li><p> O emulador ainda não suporta números em formato hexadecimal e em formato binário;</p></li>
-			<li><p> O Rotulo n&atilde;o deve ser informado na mesma linha que a instru&ccedil;&atilde;o;</p></li>
+			<li><p> A Pilha é inicializada no endereço 16(0x010), </p></li>
 		</ul>
 			
-		<ul><p>
-			Exemplo de código:<br />
+		
+		<p><h2> Exemplos</h2></p>
+		<div class="well well-large">
+    
 			LDI R16,5<br />
 			CPI R16,4<br />
 			BRGE PULA    ;verifica se R16 >= 4<br />
 			LDI R18,55<br />
 
-			PULA:<br />
-			LDI R20,5<br />
-		</p></ul>
+			PULA: LDI R20,5<br />
+			
+  		</div>
+  		<div class="well well-large">
+  			LDI R18,5<br />
+			CALL ROTINA<br />
+			MOV R18,R16<br />
+			<br />
+			JMP FIM ;vai para o fim do programa<br />
+			<br />
+			ROTINA:<br />
+			   LDI R16,10<br />
+			RET<br /><br />
+
+			FIM:
+  		</div>
+
 
 		<br />
 
 		<p><h2> Lista dos Comandos Implementados:</h2></p>
-		
+		<div class="well well-small">
 		<ul>
-		    LDI
-			MOV
-			CPI
-			CP
-			BRGE
-			BREQ
-			BRLT
-			BRSH
-			BRCC
-			BRLO
-			BRCS
-			BRMI
-			BRVS
-			BRNE
-			BRPL
-			BRVC
-			JPM
-			ADD
-			ADC
-			ADIW
-			.ORG
-			ASR
-			NEG
-			STS
-			LDS
-			ST
-			LD
-			INC
-			DEC
-			NOP
-			SUB
-			SUBI
-			OR
-			ORI
-			AND
-			ANDI
-			MUL
-			COM
-        	EOR
-        	LSL
-        	LSR
-        	ROL
-        	ROR
-        	MOVW
-        	XCH
+		    <li>LDI</li>
+			<li>MOV</li>
+			<li>CPI</li>
+			<li>CP</li>
+			<li>BRGE</li>
+			<li>BREQ</li>
+			<li>BRLT</li>
+			<li>BRSH</li>
+			<li>BRCC</li>
+			<li>BRLO</li>
+			<li>BRCS</li>
+			<li>BRMI</li>
+			<li>BRVS</li>
+			<li>BRNE</li>
+			<li>BRPL</li>
+			<li>BRVC</li>
+			<li>JPM</li>
+			<li>ADD</li>
+			<li>ADC</li>
+			<li>ADIW</li>
+			
+			<li>ASR</li>
+			<li>NEG</li>
+			<li>STS</li>
+			<li>LDS</li>
+			<li>ST</li>
+			<li>LD</li>
+			<li>INC</li>
+			<li>DEC</li>
+			<li>NOP</li>
+			<li>SUB</li>
+			<li>SUBI</li>
+			<li>OR</li>
+			<li>ORI</li>
+			<li>AND</li>
+			<li>ANDI</li>
+			<li>MUL</li>
+			<li>COM</li>
+        	<li>EOR</li>
+        	<li>LSL</li>
+        	<li>LSR</li>
+        	<li>ROL</li>
+        	<li>ROR</li>
+        	<li>MOVW</li>
+        	<li>XCH</li>
+        	<li>PUSH</li>
+        	<li>POP</li>
+
+        	<li>.ORG (Instru&ccedil;&atilde;o do simulador - base de memória de instru&ccedil;&atilde;o. default: 0x000.)</li>
         </ul>
+    </div>
 	</p>
 
-	<p>Obrigado!</p>
-	<p>Este emulador foi desenvolvido por Matheus Liberato e Victor Carlquist e est&aacute; sendo orientado pelo Prof. Ms. Alvaro Costa Neto.</p>
+	<p>Obrigado! (E que a for&ccedil;a esteja com voc&ecirc;.)</p>
+	<p>Este emulador foi desenvolvido por <span class="label label-success">Matheus Liberato</span> e <span class="label label-success">Victor Carlquist</span> e est&aacute; sendo orientado pelo <span class="label label-success">Prof. Ms. Alvaro Costa Neto.</span></p>
 			
 			<a href="index.html">Voltar!</a>
 		</div>

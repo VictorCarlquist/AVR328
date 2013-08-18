@@ -11,7 +11,7 @@ CAVR328 = function (AVR328)
 	this.T = 0;
 	this.I = 0;
 	this.PC = 0;
-	this.SP = 0;
+	this.SP = 16;
 }
 var AVR328 = new CAVR328;
 var LINE = 0;
@@ -1870,4 +1870,71 @@ classeteste.prototype.Command = function(s,tipo) //s = Rd,kk
 AVR328.Commands.push(new classeteste());
 //*********************************************
 //***FIM CALL ******************************
+//*********************************************
+
+
+//*********************************************
+//***Comando  PUSH******************************
+//*********************************************
+var classeteste = function()
+{
+	//Complemento de 2
+	this.asm = "PUSH";
+
+	this.opcode="1001 001d dddd 1111"; //tudo em caixa baixa!
+}
+classeteste.prototype.Command = function(s,tipo) //s = Rd
+{
+	if (ValidateInput(s,_R)) // Valida os parametros do comando
+	{
+		
+		var d = GetDReg(s);
+		
+		var bin = DecToBin(AVR328.R[d]);
+
+		MEMORIA_DADOS[AVR328.SP++] = DecToBin(AVR328.R[d],8,true);
+		InsereMemoria(CreateOpcode(this.opcode,d,0,0,0,5,0));
+		LINE++; AVR328.PC++;
+		return 0;
+	}else
+	{
+		return 1;
+	}	
+}
+AVR328.Commands.push(new classeteste());
+//*********************************************
+//***FIM PUSH ******************************
+//*********************************************
+
+//*********************************************
+//***Comando  POP******************************
+//*********************************************
+var classeteste = function()
+{
+	//Complemento de 2
+	this.asm = "POP";
+
+	this.opcode="1001 000d dddd 1111"; //tudo em caixa baixa!
+}
+classeteste.prototype.Command = function(s,tipo) //s = Rd
+{
+	if (ValidateInput(s,_R)) // Valida os parametros do comando
+	{
+		
+		var d = GetDReg(s);
+		
+		AVR328.R[d] = BinToDec(TrimAll(MEMORIA_DADOS[--AVR328.SP]));
+
+
+		InsereMemoria(CreateOpcode(this.opcode,d,0,0,0,5,0));
+		LINE++; AVR328.PC++;
+		return 0;
+	}else
+	{
+		return 1;
+	}	
+}
+AVR328.Commands.push(new classeteste());
+//*********************************************
+//***FIM POP ******************************
 //*********************************************

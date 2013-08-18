@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 	<head>
 
@@ -83,11 +84,19 @@
 		
 		<link type="text/css" rel="stylesheet" href="estilo.css">
 		<link type="text/css" rel="stylesheet" href="alan.css">
+		<link rel="stylesheet" href="css/bootstrap/css/bootstrap.css"></link>
+		<link rel="stylesheet" href="css/bootstrap/css/bootstrap-responsive.css"></link>
 		<title>Emulador AVR328 v.Alpha 1.1</title>
 		
 	</head>
 	<body onload="Montar()">
-	<div id="ajuda_menu"><a href="ajuda.html">Ajuda</a></div>
+		<ul class="nav nav-tabs">
+    		<li class="active">
+    			<a href="#">Simulador</a>
+   		 	</li>
+    		<li><a href="ajuda.html">Ajuda</a></li>
+    	</ul>
+	
 		<div id="todo">
 		
 <!--		<p>Antes de iniciar, acesse este <a href="ajuda.html">link!</a></p>-->
@@ -97,11 +106,11 @@
 			            <div id="code">
 				            <div id="titulo">Insira as intru&ccedil;&otilde;es:</div>
 				
-				            <textarea onscroll="scroolCode()" id="CODE" spellcheck="false" class="code" rows="30" cols=40></textarea>
+				            <textarea onscroll="scroolCode()" id="CODE" spellcheck="false" class="code row-fluid" rows="30" cols="40" ></textarea>
 				            <p>
-					            <button onclick="Montar()">Montar</button>
-					            <button id="btn_Executa"  disabled onclick="Executar()">Executar</button>
-					            <button id="btn_Frente"  disabled onclick="Passo()">-></button>
+					            <button onclick="Montar()" class="btn btn-primary btn-small" >Montar</button>
+					            <button id="btn_Executa"  class="btn btn-primary btn-small" disabled onclick="Executar()">Executar</button>
+					            <button id="btn_Frente"  class="btn btn-primary btn-small" disabled onclick="Passo()">-></button>
 					            <input type="text" id="linha"></input>
 					            
 				            <textarea id="erros" spellcheck="false" class="erros" rows=4 ></textarea>
@@ -109,9 +118,9 @@
 			            </div>
 			            <div id="console1">
 				            <div id="titulo">Mem&oacute;ria Instru&ccedil;&otilde;es</div>
-				            <textarea id="opcode" spellcheck="false" class="opcode" rows="15" ></textarea>
+				            <textarea id="opcode" spellcheck="false" class="opcode" rows="15" readonly ></textarea>
 				            <div id="titulo">Mem&oacute;ria Dados</div>
-				            <textarea id="dados" spellcheck="false" class="opcode " rows="15"></textarea>
+				            <textarea id="dados" spellcheck="false" class="opcode " rows="15" readonly></textarea>
 				
 			            </div>
 			            <div id="console3">

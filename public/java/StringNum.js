@@ -558,9 +558,10 @@ function ADIW(s){
 		
 		AfetaFlag(result);
 		//coloca os valores em cada registrador do par.
-		AVR328.R[d1] = BinToDec(result.slice(0,8)); //Pega ate a posicao 8.
-		AVR328.R[d]  = BinToDec(result.slice(-8));  //Pega oito casas a partir da ultima.
-		
+		if(EXECUTAR){
+			AVR328.R[d1] = BinToDec(result.slice(0,8)); //Pega ate a posicao 8.
+			AVR328.R[d]  = BinToDec(result.slice(-8));  //Pega oito casas a partir da ultima.
+		}
 		return true;
 }
 

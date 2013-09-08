@@ -7,7 +7,7 @@
 		<meta name="author" content="Victor Carlquist">
 		<meta charset="UTF-8">
 
-		<script language="javascript" type="text/javascript" src="java/jquery.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 		
 		<style>
 			#ajuda{
@@ -24,6 +24,10 @@
 		<script type="text/javascript" src="java/StringNum.js"></script>
 		<script type="text/javascript" src="java/CAVR328.js"></script>
 		<script type="text/javascript" src="java/execucao.js"></script>
+
+		<script src="http://w3resource.com/twitter-bootstrap/twitter-bootstrap-v2/js/bootstrap-tooltip.js"></script>
+      	<script src="http://w3resource.com/twitter-bootstrap/twitter-bootstrap-v2/js/bootstrap-popover.js"></script>
+      
 		
 		<!--script>
 		var girado = false; 
@@ -83,56 +87,83 @@
 		</script-->
 		
 		<link type="text/css" rel="stylesheet" href="css/estilo.css">
-		<link type="text/css" rel="stylesheet" href="css/alan.css">
+		<!--link type="text/css" rel="stylesheet" href="css/alan.css"-->
 		<link type="text/css" rel="stylesheet" href="css/bootstrap/css/bootstrap.css">
 		<link type="text/css" rel="stylesheet" href="css/bootstrap/css/bootstrap-responsive.css">
-		<title>Emulador AVR328 v.Alpha 1.1</title>
+		<title>Simulador AVR328</title>
 		
 	</head>
-	<body onload="Montar()">
+	<body onload="inicializa(0)">
 		<ul class="nav nav-tabs">
     		<li class="active">
     			<a href="#">Simulador</a>
    		 	</li>
     		<li><a href="site/ajuda.html">Ajuda</a></li>
     	</ul>
-	
+	<div id="page">
+		<center><h4>Simulador AVR328</h4></center>
+		<div id="controles">
+			   <button onclick="Montar()" class="btn btn-primary btn-small" >Montar</button>
+	            <button id="btn_Executa"  class="btn btn-primary btn-small" disabled onclick="Executar()">Executar</button>
+	            <button id="btn_Frente"  class="btn btn-primary btn-small" disabled onclick="Passo()">Passo</button>
+	            <button id="btn_Reiniciar"  class="btn btn-primary btn-small" onclick="inicializa(0)">Reset</button>
+			   			          
+		</div>
 		<div id="todo">
-		
+			
 <!--		<p>Antes de iniciar, acesse este <a href="ajuda.html">link!</a></p>-->
             
                 <div id="face1" class="face um">
-		            <div id="linhas"></div>
+		            
 			            <div id="code">
-				            <div id="titulo">Insira as intru&ccedil;&otilde;es:</div>
-				
-				            <textarea onscroll="scroolCode()" id="CODE" spellcheck="false" class="code row-fluid" rows="30" cols="40" ></textarea>
-				            <p>
-					            <button onclick="Montar()" class="btn btn-primary btn-small" >Montar</button>
-					            <button id="btn_Executa"  class="btn btn-primary btn-small" disabled onclick="Executar()">Executar</button>
-					            <button id="btn_Frente"  class="btn btn-primary btn-small" disabled onclick="Passo()">-></button>
-					            <input type="text" id="linha"></input>
-					            
+				            <h5>Programa:</h5>
+											
+							<div id="CODE"></div>
+				            <script src="ace-builds/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+							<script>
+							  	editor = ace.edit("CODE");
+							    editor.setTheme("ace/theme/clouds");
+							    editor.getSession().setMode("ace/mode/assembly_x86");							
+							</script>
+					         <h5>Problemas:</h5>
 				            <textarea id="erros" spellcheck="false" class="erros" rows=4 ></textarea>
+				            
 			            
 			            </div>
-			            <div id="console1">
-				            <div id="titulo">Mem&oacute;ria Instru&ccedil;&otilde;es</div>
-				            <textarea id="opcode" spellcheck="false" class="opcode row-fluid" rows="15" readonly ></textarea>
-				            <div id="titulo">Mem&oacute;ria Dados</div>
-				            <textarea id="dados" spellcheck="false" class="opcode row-fluid" rows="15" readonly></textarea>
-				
-			            </div>
+			            
 			            <div id="console3">
-					        <div id="titulo" style="width:160px;">Banco de Registradores e Registradores de Estado</div>
-					         <div id="Reg" ></div>
-					         
-					        <div id="Flag"></div>
+			            	<div id="Registradores">
+					     	   <h5>Registradores:</h5>
+						         <div id="Reg">
+									<div id="Reg1" style="float: left; width: 25%;"></div>
+									<div id="Reg2" style="float: left; width: 25%;"></div>
+									<div id="Reg3" style="float: left; width: 25%;"></div>
+									<div id="Reg4" style="float: left; width: 25%;"></div>
+								</div>
+							</div>
+							<div id="Estados">
+								<h5>Estados:</h5>
+					        	<div id="Flag"></div>
+					        </div>
 			            </div> 
+			            <div id="console1">
+				             	<div class="opcode">
+						            <h5>Mem&oacute;ria Instru&ccedil;&otilde;es:</h5>
+						            <textarea id="opcode" spellcheck="false" class="opcode" rows="15" readonly ></textarea>
+						        </div>
+						        <div class="opcode">
+						            <h5>Mem&oacute;ria Dados:</h5>
+						            <textarea id="dados" spellcheck="false" class="opcode" rows="15" readonly></textarea>
+			            		</div>
+			            	</div>
+
+			             
 			           
 			    </div>
 			 
 
 		</div>
+	</div>
+</div>
 	</body>
 </html>

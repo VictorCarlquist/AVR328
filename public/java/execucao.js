@@ -5,7 +5,31 @@ var END = 0;
 var LINE = 0;
 var EXECUTAR = false; //VARIAVEL DIZ SE O EMULADOR ESTA EXECUTANDO O CODIDO, PARA IMPEDIR QUE ELE ADICIONE OS OPCODES NOVAMENTE
 var MONTAGEM_OK;
+var editor;
 	
+function leftPad(number, targetLength) {
+    var output = number + '';
+    while (output.length < targetLength) {
+        output = '0' + output;
+    }
+    return output;
+}
+function criarPop(i,num)
+{
+	
+	var s = "<span id='R"+leftPad(i,2)+"'data-original-title>  R"+leftPad(i,1)+"  : "+num+"</span><br>";
+	s+="<script>$('#R"+leftPad(i,2)+"').popover({ title:' R"+leftPad(i,1)+": "+num+"', content: 'Bin: "+DecToBin(AVR328.R[i],8,true)+"<br>Hex: 0x"+AVR328.R[i].toString(16).toUpperCase()+"'});</script>";
+
+	if(i<8)
+		$( "#Reg1" ).append(s);
+	else if(i<16)
+			$( "#Reg2" ).append(s);
+		else if(i<24)
+			$( "#Reg3" ).append(s);
+		else
+			$( "#Reg4" ).append(s);
+}
+
 /**
 * Atualiza os valores dos registradores na interface
 */
@@ -13,29 +37,53 @@ function AtualizaDados()
 {
 	var flags = document.getElementById("Flag");
 	var ns = "";
-	ns += "I: -  <br />";
-	ns += "T: -  <br/>";
-	ns += "H: -  <br/>";
-	ns += "S: "+AVR328.S+"  <br/>";
-	ns += "V: "+AVR328.V+"  <br/>";
-	ns += "N: "+AVR328.N+"  <br/>";
-	ns += "Z: "+AVR328.Z+"  <br/>";
-	ns += "C: "+AVR328.C+"  <br/>";
-	ns += "SP:"+AVR328.SP+"  <br/>";
+//	ns += "I: -  <br />";
+//	ns += "T: -  <br/>";
+//	ns += "H: -  <br/>";
+	
+	if(AVR328.S)
+		ns += "<span class='label label-warning'>S</span><br />";
+	else
+		ns += "<span class='label'>S</span><br />";
+	if(AVR328.V)
+		ns += "<span class='label label-warning'>V</span><br />";
+	else
+		ns += "<span class='label'>V</span><br />";
+	if(AVR328.N)
+		ns += "<span class='label label-warning'>N</span><br />";
+	else
+		ns += "<span class='label'>N</span><br />";
+	if(AVR328.Z)
+		ns += "<span class='label label-warning'>Z</span><br />";
+	else
+		ns += "<span class='label'>Z</span><br />";
+	if(AVR328.C)
+		ns += "<span class='label label-warning'>C</span><br />";
+	else
+		ns += "<span class='label'>C</span><br />";
+	ns += "<span>SP:"+AVR328.SP+"  </span><br/>";
 	//ns += "PC:"+AVR328.PC+" <br/>";
 	
 	flags.innerHTML = ns;
-	flags = document.getElementById("Reg");
+	flags = document.getElementById("Reg1");
 	ns= "";
+	flags.innerHTML = ns;
+	flags = document.getElementById("Reg2");
+	flags.innerHTML = ns;
+	flags = document.getElementById("Reg3");
+	flags.innerHTML = ns;
+	flags = document.getElementById("Reg4");
+	flags.innerHTML = ns;
+	//flags.innerHTML = '';
 	for(var i=0;i<32;i++)
 	{
-		if(i<10)
-			ns+= "R"+i+" : "+ AVR328.R[i]  +" ("+DecToBin(AVR328.R[i])+")";
-		else
-			ns+= "R"+i+": "+ AVR328.R[i]+" ("+DecToBin(AVR328.R[i])+")";
-		ns+="<br />";
+		criarPop(i,leftPad(AVR328.R[i],3));
 	}
-	flags.innerHTML = ns;
+	
+	$(function (){
+		$("[rel=popover]").popover({placement:'left'});
+		}); 
+	//flags.innerHTML = ns;
 	
 }
 /**
@@ -159,37 +207,48 @@ function inicializa(tipo)
 	var comandos = AVR328.Commands;
 	AVR328 = new CAVR328;
 	AVR328.Commands = comandos;
-	for(var i=0;i<32;i++)
-		AVR328.R[i] = 0;
+		for(var i=0;i<32;i++)
+				AVR328.R[i] = Math.floor((Math.random()*256));
 	if(tipo == 0)
 	{
 		ConsoleBin("");
 		for(var i=0;i<4096;i++)
 		{
-			MEMORIA[i] = "0000 0000";
-			MEMORIA_DADOS[i] = "0000 0000";
+			MEMORIA[i] =  DecToBin(Math.floor((Math.random()*256)),8,true);
+			MEMORIA_DADOS[i] = DecToBin(Math.floor((Math.random()*256)),8,true);
 		}
+		MostraMemoriaDados();
+		MostraMemoria();
 	}
 	if(tipo == 1)
 	{
 		for(var i=0;i<4096;i++)
 		{
-			MEMORIA_DADOS[i] = "0000 0000";
+			MEMORIA_DADOS[i] = DecToBin(Math.floor((Math.random()*256)),8,true);
 		}
 		MostraMemoriaDados();
+		MostraMemoria();
 	}
+	END = 0;
+	AtualizaDados();
+	
+	document.getElementById("btn_Executa").disabled = true;
+	document.getElementById("btn_Frente").disabled = true;
+}
+function Valida()
+{
 	END = 0;
 	AtualizaDados();
 	
 	if(MONTAGEM_OK)
 	{
 		document.getElementById("btn_Executa").disabled = false;
-		document.getElementById("btn_Frente").disabled = true;
+		document.getElementById("btn_Frente").disabled = false;
 	}
 	else
 	{
 		document.getElementById("btn_Executa").disabled = true;
-		document.getElementById("btn_Frente").disabled = false;
+		document.getElementById("btn_Frente").disabled = true;
 	}
 }
 /**
@@ -234,13 +293,13 @@ function Montar()
 	ConsoleBinErro("");
 	MONTAGEM_OK = true;
 	EXECUTAR = false;
-	inicializa(0);
+	//inicializa(0);
 	LINE=0;
-	document.getElementById("linha").value = "linha: " +LINE;
+	//document.getElementById("linha").value = "linha: " +LINE;
 	var CampoOpCODE = document.getElementById("opcode");
 
 
-	CODE = document.getElementById("CODE").value.split("\n");//Coloca uma LINE em cada indice do vetor
+	CODE =editor.getValue().split("\n");//Coloca uma LINE em cada indice do vetor
 	while(LINE < CODE.length)
 	{
 		
@@ -277,7 +336,7 @@ function Montar()
 					encontrado = true;
 					if(AVR328.Commands[i].Command(TrimAll(part[1]),0) == 1) // Chama a ação do comando passando os parametros do comando
 					{
-						ConsoleBinErro("Erro na linha "+ (parseInt(LINE)+1)+" : Parametro da instrucao "+AVR328.Commands[i].asm.toUpperCase()+"  incorreto.");
+						ConsoleBinErro("Linha ["+ (parseInt(LINE)+1)+"] : Parametro da instrução "+AVR328.Commands[i].asm.toUpperCase()+"  incorreto.");
 						MONTAGEM_OK = false;
 						break;
 					}
@@ -303,15 +362,21 @@ function Montar()
 		
 	}
 	
-	inicializa(1); // Limpa o estado do processador, pois esta função é apenas para gerar os opcodes.
+	//inicializa(1); // Limpa o estado do processador, pois esta função é apenas para gerar os opcodes.
+	Valida();
 	if(MONTAGEM_OK && LINE != 1)
 	{
-		document.getElementById("CODE").disabled = true;
+		editor.setReadOnly(false); 
+		document.getElementById("btn_Executa").disabled = false;
 		document.getElementById("btn_Frente").disabled = false;
 	}else
+	{
+		document.getElementById("btn_Executa").disabled = true;
 		document.getElementById("btn_Frente").disabled = true;
-
+	}
 	LINE = 0;
+	END = 0;
+	
 	
 }		
 /**
@@ -321,7 +386,7 @@ function Executar()
 {
 	ConsoleBinErro("");
 	EXECUTAR = true;
-	inicializa(1);
+	//inicializa(1);
 	while(LINE < CODE.length)
 	{
 		
@@ -373,7 +438,9 @@ function Executar()
 			
 	}
 	EXECUTAR = false;
-	document.getElementById("CODE").disabled = false;
+	editor.setReadOnly(true); 
+	document.getElementById("btn_Executa").disabled = false;
+	document.getElementById("btn_Frente").disabled = false;
 }		
 /**
 *Executa o código LINE por LINE
@@ -387,7 +454,14 @@ function Passo()
 	//Este laço deixa com 1 espaço entre o CCC e Rd. Ex: LDI      R10,10 ->após o laço-> LDI R10,10
 	var c = CODE[LINE].toUpperCase();//separa a instrução do parametros
 	var part = Normalizar(c);
-		
+	
+	while(c == "")
+	{
+		LINE++;	
+		c = CODE[LINE].toUpperCase();//separa a instrução do parametros
+		part = Normalizar(c);
+	}
+			
 	//se for uma label, pula para proxima LINE 
 		var isLabelOnly = false;
 		if(part[0].indexOf(":") >= 0 || part[0]=="")
@@ -402,6 +476,8 @@ function Passo()
 				isLabelOnly = true;
 			}
 		}	
+		
+		
 		if(!isLabelOnly)
 		{
 			var encontrado = false;
@@ -433,11 +509,12 @@ function Passo()
 	if((LINE) >= CODE.length)
 	{
 		document.getElementById("btn_Frente").disabled = true;
-		document.getElementById("CODE").disabled = false;
+		editor.setReadOnly(true); 
 	}
 	
-	document.getElementById("linhas").value = "Linha: " +LINE;
-	LINEs(LINE);
+	//document.getElementById("linhas").value = "Linha: " +LINE;
+	editor.gotoLine(LINE);
+	//LINEs(LINE);
 }		
 /**
 * Gera o numero das LINEs e destaca a LINE em execução
@@ -455,10 +532,10 @@ function LINEs(l)
 		}else
 			ns+=i+"<br />";
 	}
-	document.getElementById("linhas").innerHTML = ns;
+	//document.getElementById("linhas").innerHTML = ns;
 }
 function scroolCode()
 {
-	document.getElementById("linhas").scrollTop = document.getElementById("CODE").scrollTop;
+	//document.getElementById("linhas").scrollTop = document.getElementById("CODE").scrollTop;
 }
 

@@ -21,7 +21,7 @@
 
 #div_texto
 {
-   background:url(img/bg_aux.png) 100% 100%;
+   background:url(../img/bg_aux.png) 100% 100%;
   position: absolute;
   color: #160f01;
   margin-left: 5%;

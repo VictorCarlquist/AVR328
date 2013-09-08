@@ -14,24 +14,24 @@
     		<li class="active"><a href="ajuda.html">Ajuda</a></li>
     	</ul>
 		<div id="ajuda">
-		<h2>Avisos Importantes! </h2>
+		<h4>Avisos Importantes! </h4>
 		
-		<p> Este projeto visa <u>AUXILIAR</u> o aprendizado de linguagem assembly para os alunos do curso TADS na disciplina de
-		    Arquitetura de Computadores. </p>
+		<p> Este projeto visa auxiliar o aprendizado de linguagem assembly para os alunos do curso superior de Tecnologia em Análise e Desenvolvimento de Sitemas (TADS) na disciplina de Arquitetura de Computadores. </p>
 
-		<p>Este projeto encontra-se em fase de desenvolvimento, portanto nem todos os recursos estão implementados!</p>
+		<p>Este projeto encontra-se em fase de desenvolvimento, portanto nem todos os recursos estão implementados.</p>
 
-		<p>Caso o emulador apresente algum 'BUG', por favor, enviar o problema para <a href=mailto:victorcarlquist@gmail.com>Victor Carlquist</a> ou <a href=mailto:matheusliberatosbs@gmail.com>Matheus Liberato</a>.</p>
+		<p>Caso o simulador apresente algum problema, por favor, relate para <a href=mailto:victorcarlquist@gmail.com>Victor Carlquist</a> ou <a href=mailto:matheusliberatosbs@gmail.com>Matheus Liberato</a>.</p>
 				
-		<p><h2> Observa&ccedil;&otilde;es </h2></p>
+		<p><h4> Observa&ccedil;&otilde;es </h4></p>
 		
 		<ul>
-			<li><p> O emulador ainda não suporta números em formato hexadecimal e em formato binário;</p></li>
-			<li><p> A Pilha é inicializada no endereço 16(0x010), </p></li>
+			<li><p> O emulador suporta apenas números decimais;</p></li>
+			<li><p> A Pilha é inicializada no endereço 16(0x010). </p></li>
 		</ul>
 			
 		
-		<p><h2> Exemplos</h2></p>
+		<p><h4> Exemplos</h4></p>
+		O programa a seguir compara o registrador R16 com o número 4, caso o valor do R16 for maior ou igual a 4 o salto ocorrerá para a <i>label</i> 'PULA' e o registrador R18 não receberá o valor 55.
 		<div class="well well-large">
     
 			LDI R16,5<br />
@@ -42,83 +42,98 @@
 			PULA: LDI R20,5<br />
 			
   		</div>
+		O programa a seguir mostra o funcionamento da instrução CALL e o uso de subrotina.
   		<div class="well well-large">
-  			LDI R18,5<br />
-			CALL ROTINA<br />
-			MOV R18,R16<br />
-			<br />
-			JMP FIM ;vai para o fim do programa<br />
-			<br />
-			ROTINA:<br />
+  			JMP INICIO ;vai para o inicio do programa<br /><br />
+
+  			ROTINA:<br />
 			   LDI R16,10<br />
 			RET<br /><br />
 
-			FIM:
+
+  			INICIO:	LDI R18,5<br />
+			CALL ROTINA<br />
+			MOV R18,R16<br />
+			<br />
+			
   		</div>
 
 
 		<br />
 
-		<p><h2> Lista dos Comandos Implementados:</h2></p>
+		<p><h4> Lista dos Comandos Implementados</h4></p>
 		<div class="well well-small">
-		<ul>
-		    <li>LDI</li>
-			<li>MOV</li>
-			<li>CPI</li>
-			<li>CP</li>
-			<li>BRGE</li>
-			<li>BREQ</li>
-			<li>BRLT</li>
-			<li>BRSH</li>
-			<li>BRCC</li>
-			<li>BRLO</li>
-			<li>BRCS</li>
-			<li>BRMI</li>
-			<li>BRVS</li>
-			<li>BRNE</li>
-			<li>BRPL</li>
-			<li>BRVC</li>
-			<li>JPM</li>
-			<li>ADD</li>
-			<li>ADC</li>
-			<li>ADIW</li>
-			
-			<li>ASR</li>
-			<li>NEG</li>
-			<li>STS</li>
-			<li>LDS</li>
-			<li>ST</li>
-			<li>LD</li>
-			<li>INC</li>
-			<li>DEC</li>
-			<li>NOP</li>
-			<li>SUB</li>
-			<li>SUBI</li>
-			<li>OR</li>
-			<li>ORI</li>
-			<li>AND</li>
-			<li>ANDI</li>
-			<li>MUL</li>
-			<li>COM</li>
-        	<li>EOR</li>
-        	<li>LSL</li>
-        	<li>LSR</li>
-        	<li>ROL</li>
-        	<li>ROR</li>
-        	<li>MOVW</li>
-        	<li>XCH</li>
-        	<li>PUSH</li>
-        	<li>POP</li>
-
-        	<li>.ORG (Instru&ccedil;&atilde;o do simulador - base de memória de instru&ccedil;&atilde;o. default: 0x000.)</li>
-        </ul>
+		<table border=1 style="text-align:center;padding:10px" cellpadding="10">
+			<tr>
+		    <td>LDI</td>
+			<td>MOV</td>
+			<td>CPI</td>
+			<td>CP</td>
+			<td>BRGE</td>
+			<td>BREQ</td>
+			<td>BRLT</td>
+			<td>BRSH</td>
+			<td>BRCC</td>
+			<td>BRLO</td>
+			<td>.ORG</td>
+			</tr>
+			<tr>
+			<td>BRCS</td>
+			<td>BRMI</td>
+			<td>BRVS</td>
+			<td>BRNE</td>
+			<td>BRPL</td>
+			<td>BRVC</td>
+			<td>JPM</td>
+			<td>ADD</td>
+			<td>ADC</td>
+			<td>ADIW</td>
+			<td>ASR</td>
+			</tr>
+			<tr>
+			<td>NEG</td>
+			<td>STS</td>
+			<td>LDS</td>
+			<td>ST</td>
+			<td>LD</td>
+			<td>INC</td>
+			<td>DEC</td>
+			<td>NOP</td>
+			<td>SUB</td>
+			<td>SUBI</td>
+			<td>OR</td>
+			</tr>
+			<tr>
+			<td>ORI</td>
+			<td>AND</td>
+			<td>ANDI</td>
+			<td>MUL</td>
+			<td>COM</td>
+        	<td>EOR</td>
+        	<td>LSL</td>
+        	<td>LSR</td>
+        	<td>ROL</td>
+        	<td>ROR</td>
+        	<td>MOVW</td>
+        	</tr>
+        	<tr>
+        	<td>XCH</td>
+        	<td>PUSH</td>
+        	<td>POP</td>
+        	
+        	</tr>
+        </table>
     </div>
 	</p>
 
-	<p>Obrigado! (E que a for&ccedil;a esteja com voc&ecirc;.)</p>
+	<p>Obrigado! (E que a for&ccedil;a esteja com voc&ecirc;!)</p>
 	<p>Este emulador foi desenvolvido por <span class="label label-success">Matheus Liberato</span> e <span class="label label-success">Victor Carlquist</span> e est&aacute; sendo orientado pelo <span class="label label-success">Prof. Ms. Alvaro Costa Neto.</span></p>
 			
-			<a href="../index.html">Voltar!</a>
+			<br/>
+
+			<center><a href="http://www.ifspcjo.edu.br"><img style="width:200px;height:100px;margin:10px;"src="../img/logoIFSP.png"/></a></center>
+
+			<br/><a <span class="label label-info" href="../index.html">Voltar!</a><br/>
 		</div>
 	</body>
 </html>

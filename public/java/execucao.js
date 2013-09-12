@@ -234,6 +234,7 @@ function inicializa(tipo)
 	
 	document.getElementById("btn_Executa").disabled = true;
 	document.getElementById("btn_Frente").disabled = true;
+	editor.setReadOnly(false); 
 }
 function Valida()
 {

@@ -438,9 +438,9 @@ function Executar()
 			
 	}
 	EXECUTAR = false;
-	editor.setReadOnly(true); 
-	document.getElementById("btn_Executa").disabled = false;
-	document.getElementById("btn_Frente").disabled = false;
+	editor.setReadOnly(false); 
+	document.getElementById("btn_Executa").disabled = true;
+	document.getElementById("btn_Frente").disabled = true;
 }		
 /**
 *Executa o código LINE por LINE

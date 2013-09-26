@@ -1251,7 +1251,7 @@ classeteste.prototype.Command = function(s,tipo) //s = Rd,Rd
 		if(EXECUTAR)
 		{
 			AVR328.R[d] = BinToDec(SUB(DecToBin(AVR328.R[d]),DecToBin(k)));
-			AVR328.R[d] = BinToDec(SUB(DecToBin(AVR328.R[d]),DecToBin(AVR328.C));
+			AVR328.R[d] = BinToDec(SUB(DecToBin(AVR328.R[d]),DecToBin(AVR328.C)));
 			AfetaFlag(DecToBin(AVR328.R[d]));
 		}
 		InsereMemoria(CreateOpcode(this.opcode,d-16,k,8,0,4));

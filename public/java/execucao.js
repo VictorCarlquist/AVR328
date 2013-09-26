@@ -2,7 +2,7 @@ var CODE;
 var MEMORIA = new Array(4096);
 var MEMORIA_DADOS = new Array(4096);
 var END = 0;
-var LINE = 0;
+var LINE = 1;
 var EXECUTAR = false; //VARIAVEL DIZ SE O EMULADOR ESTA EXECUTANDO O CODIDO, PARA IMPEDIR QUE ELE ADICIONE OS OPCODES NOVAMENTE
 var MONTAGEM_OK;
 var editor;
@@ -319,7 +319,8 @@ function Montar()
 		{
 			if(part[1] != "") // se true: existe uma instrucao na frente da label
 			{
-				part = Normalizar(part[1]);
+				var c = part[0].substr(part[0].indexOf(":")+1)+' '+ part[1];
+				part = Normalizar(Trim(c));
 			}
 			else
 			{
@@ -370,6 +371,7 @@ function Montar()
 		editor.setReadOnly(false); 
 		document.getElementById("btn_Executa").disabled = false;
 		document.getElementById("btn_Frente").disabled = false;
+		editor.gotoLine(1);
 	}else
 	{
 		document.getElementById("btn_Executa").disabled = true;
@@ -453,7 +455,7 @@ function Passo()
 	//inicializa(1);
 
 	//Este laço deixa com 1 espaço entre o CCC e Rd. Ex: LDI      R10,10 ->após o laço-> LDI R10,10
-	var c = CODE[LINE].toUpperCase();//separa a instrução do parametros
+	var c = Trim(CODE[LINE].toUpperCase());//separa a instrução do parametros
 	var part = Normalizar(c);
 	
 	while(c == "")
@@ -469,7 +471,8 @@ function Passo()
 		{
 			if(part[1] != "") // se true: existe uma instrucao na frente da label
 			{
-				part = Normalizar(part[1]);
+				var c = part[0].substr(part[0].indexOf(":")+1)+' '+ part[1];
+				part = Normalizar(Trim(c));
 			}
 			else
 			{
@@ -514,7 +517,7 @@ function Passo()
 	}
 	
 	//document.getElementById("linhas").value = "Linha: " +LINE;
-	editor.gotoLine(LINE);
+	editor.gotoLine(LINE+1);
 	//LINEs(LINE);
 }		
 /**

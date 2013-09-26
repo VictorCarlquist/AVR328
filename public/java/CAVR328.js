@@ -1156,6 +1156,43 @@ AVR328.Commands.push(new classeteste());
 
 
 //*********************************************
+//***Comando SBC ******************************
+//*********************************************
+var classeteste = function()
+{
+	this.asm = "SBC";
+	this.opcode="0000 10rd dddd rrrr"; //tudo em caixa baixa!
+}
+classeteste.prototype.Command = function(s,tipo) //s = Rd,Rd
+{
+	if (ValidateInput(s,_R_R)) // Valida os parametros do comando
+	{
+		var d = GetDReg(s);
+		var d2 = GetDReg2(s);
+		
+		if(EXECUTAR)
+		{
+			AVR328.R[d] = BinToDec(SUB(DecToBin(AVR328.R[d]),DecToBin(AVR328.R[d2])));
+			AVR328.R[d] = BinToDec(SUB(DecToBin(AVR328.R[d]),DecToBin(AVR328.C)));
+			AfetaFlag(DecToBin(AVR328.R[d]));
+		}
+		InsereMemoria(CreateOpcode(this.opcode,d,0,0,d2,6,6));
+
+		LINE++; AVR328.PC++;
+
+		return 0;
+	}else
+	{
+		return 1;
+	}	
+}
+AVR328.Commands.push(new classeteste());
+//*********************************************
+//*******FIM SBC ******************************
+//*********************************************
+
+
+//*********************************************
 //***Comando SUBI ******************************
 //*********************************************
 var classeteste = function()
@@ -1191,6 +1228,45 @@ classeteste.prototype.Command = function(s,tipo) //s = Rd,Rd
 AVR328.Commands.push(new classeteste());
 //*********************************************
 //*******FIM SUBI *****************************
+//*********************************************
+
+//*********************************************
+//***Comando SBCI ******************************
+//*********************************************
+var classeteste = function()
+{
+	this.asm = "SBCI";
+	this.opcode="0100 kkkk dddd kkkk"; //tudo em caixa baixa!
+}
+classeteste.prototype.Command = function(s,tipo) //s = Rd,Rd
+{
+	if (ValidateInput(s,_R_K)) // Valida os parametros do comando
+	{
+		var d = GetDReg(s);
+		var k = GetK(s);
+		
+		if(d < 16 || d > 31 || k < 0 || k > 255)
+			return 1;
+		
+		if(EXECUTAR)
+		{
+			AVR328.R[d] = BinToDec(SUB(DecToBin(AVR328.R[d]),DecToBin(k)));
+			AVR328.R[d] = BinToDec(SUB(DecToBin(AVR328.R[d]),DecToBin(AVR328.C));
+			AfetaFlag(DecToBin(AVR328.R[d]));
+		}
+		InsereMemoria(CreateOpcode(this.opcode,d-16,k,8,0,4));
+
+		LINE++; AVR328.PC++;
+
+		return 0;
+	}else
+	{
+		return 1;
+	}	
+}
+AVR328.Commands.push(new classeteste());
+//*********************************************
+//*******FIM SBCI *****************************
 //*********************************************
 
 //*********************************************

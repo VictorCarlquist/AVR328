@@ -48,11 +48,11 @@ function AlterarQuadro(div_quadro)
   if (quadro_tmp == undefined)
   {
     quadro_tmp = div_quadro;    
-    quadro_tmp.css("backgroundImage" , "url(../img/alan_turing2.png)");
+    quadro_tmp.css("backgroundImage" , "url(img/alan_turing2.png)");
   }
   else
   {
-    quadro_tmp.css("backgroundImage" , "url(../img/alan_turing.png)");
+    quadro_tmp.css("backgroundImage" , "url(img/alan_turing.png)");
     
     aux = div_quadro.css("backgroundPosition").toString();
     div_quadro.css("backgroundPosition",quadro_tmp.css("backgroundPosition").toString());
@@ -80,7 +80,7 @@ $(document).ready(function()
       {
         quadro         = new Quadro()
         quadro.id      = count_quadros;
-        quadro.strhtml = '<div name="ddiv" style="background: url(../img/alan_turing.png) no-repeat '+(i*TAMANHO_QUADRADO*-1).toString()+'px '+ (j*TAMANHO_QUADRADO*-1).toString()+'px; position: relative;"></div>'
+        quadro.strhtml = '<div name="ddiv" style="background: url(img/alan_turing.png) no-repeat '+(i*TAMANHO_QUADRADO*-1).toString()+'px '+ (j*TAMANHO_QUADRADO*-1).toString()+'px; position: relative;"></div>'
         
         vetor[count_quadros] = quadro;
         count_quadros++;        

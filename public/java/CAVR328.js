@@ -1012,7 +1012,9 @@ classeteste.prototype.Command = function(s,tipo) //s = Rd
 		
 		AVR328.R[d]++;
 
-		AfetaFlag(AVR328.R[d]);
+		sdk = DecToBin(AVR328.R[d], 8);
+		AfetaFlag(sdk);
+
 		//o this.opcode é o "1110 kkkk dddd kkkk", depois é passado o numedo de 'd', e valor de k, e quantos bits são o k, que neste caso é 8bits
 		InsereMemoria(CreateOpcode(this.opcode,d,0,0,0,5));
 
@@ -1046,7 +1048,9 @@ classeteste.prototype.Command = function(s,tipo) //s = Rd
 		var d = GetDReg(s);
 		
 		AVR328.R[d]--;
-        AfetaFlag(AVR328.R[d]);
+		sdk = DecToBin(AVR328.R[d], 8);
+		AfetaFlag(sdk);
+
 		//o this.opcode é o "1110 kkkk dddd kkkk", depois é passado o numedo de 'd', e valor de k, e quantos bits são o k, que neste caso é 8bits
 		InsereMemoria(CreateOpcode(this.opcode,d,0,0,0,5));
 

@@ -216,10 +216,13 @@ classeteste.prototype.Command = function(s,tipo) //LABEL:
 	{
 		//o this.opcode é o "1110 kkkk dddd kkkk", depois é passado o numedo de 'd', e valor de k, e quantos bits são o k, que neste caso é 8bits
 		InsereMemoria(CreateOpcode(this.opcode,0,k,8));
-		if(AVR328.S == 0)
+		if(AVR328.S == 0) {
 			LINE = parseInt(k);
-		else
+			AVR328.PC = k;
+		}
+		else {
 			LINE++; AVR328.PC++;
+		}
 		return 0;
 	}
 	return 1;

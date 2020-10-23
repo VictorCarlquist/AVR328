@@ -495,7 +495,7 @@ classeteste.prototype.Command = function(s,tipo) //s = Rd,kk
 
 	var k = AchaLabel(s);
 	
-	if((AVR328.PC-63) <= k && (AVR328.PC+64) >= k && k!=-1)
+	if((true || AVR328.PC-63) <= k && (AVR328.PC+64) >= k && k!=-1)
 	{
 		//o this.opcode é o "1110 kkkk dddd kkkk", depois é passado o numedo de 'd', e valor de k, e quantos bits são o k, que neste caso é 8bits
 		InsereMemoria(CreateOpcode(this.opcode,0,k,8));
